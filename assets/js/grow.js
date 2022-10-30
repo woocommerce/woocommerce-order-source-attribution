@@ -12,11 +12,10 @@
      * Set values.
      */
     var setFields = function() {
-
+        
         if (sbjs.get) {
             $('input[name="grow_source_type"]').val(sbjs.get.current.typ);
             $('input[name="grow_source_url"]').val(sbjs.get.current_add.rf);
-            $('input[name="grow_source_mtke"]').val(sbjs.get.current.mtke);
 
             $('input[name="grow_source_utm_campaign"]').val(sbjs.get.current.cmp);
             $('input[name="grow_source_utm_source"]').val(sbjs.get.current.src);

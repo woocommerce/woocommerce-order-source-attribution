@@ -17,7 +17,6 @@ class Grow_Custom
         // main
         'type',
         'url',
-        'mtke',
 
         // utm
         'utm_campaign',
@@ -162,10 +161,9 @@ class Grow_Custom
 public function display_order_source( $order ){  ?>
     <div class="order_data_column">
 	<h4><?php _e( 'Source Info' ); ?></h4>
-	<?php 
-							  
+	<?php				       				       						  
         foreach ($this->fields as $field) {
-		echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, $this->fieldPrefix.$field, true ) . '</p>';
+		echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';
         }
 	?>				       
     </div>

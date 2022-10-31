@@ -50,6 +50,9 @@ class Grow_Custom
         // update
         add_action('woocommerce_checkout_update_order_meta', array($this, 'set_order_source'));
         add_action('user_register', array($this, 'set_customer_source'));
+	    
+	// display
+	add_action('woocommerce_admin_order_data_after_order_details', array($this, 'display_order_source'));
     }
 
     /**
@@ -154,6 +157,19 @@ class Grow_Custom
             }
         }
     }
+
+// display the extra data in the order admin panel
+public function display_order_source( $order ){  ?>
+    <div class="order_data_column">
+	<h4><?php _e( 'Source Info' ); ?></h4>
+	<?php 
+							  
+        foreach ($this->fields as $field) {
+		echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, $this->fieldPrefix.$field, true ) . '</p>';
+        }							  
+    </div>
+<?php }
+
 }
 
 new Grow_Custom();

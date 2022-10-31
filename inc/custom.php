@@ -31,6 +31,7 @@ class Grow_Custom
         'session_start_time',
         'session_pages',
         'session_count',
+	'user_agent',
     );
 
     /**

@@ -166,7 +166,8 @@ public function display_order_source( $order ){  ?>
 							  
         foreach ($this->fields as $field) {
 		echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, $this->fieldPrefix.$field, true ) . '</p>';
-        }							  
+        }
+	?>				       
     </div>
 <?php }
 

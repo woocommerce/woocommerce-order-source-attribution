@@ -159,6 +159,7 @@ class Grow_Custom
 
 // display the extra data in the order admin panel
 public function display_order_source( $order ){  ?>
+    <br/>
     <div class="source_data" style="clear:both; width:100%;">
 	<h3><?php _e( 'Source Info' ); ?></h3>
 	<?php				       				       						  

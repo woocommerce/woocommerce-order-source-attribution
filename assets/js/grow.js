@@ -28,6 +28,8 @@
             $('input[name="grow_source_session_start_time"]').val(sbjs.get.current_add.fd);
             $('input[name="grow_source_session_pages"]').val(sbjs.get.session.pgs);
             $('input[name="grow_source_session_count"]').val(sbjs.get.udata.vst);
+            
+            $('input[name="grow_source_user_agent"]').val(sbjs.get.udata.uag);
         }
     };
 

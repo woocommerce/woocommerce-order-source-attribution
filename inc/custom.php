@@ -163,7 +163,12 @@ public function display_order_source( $order ){  ?>
 	<h4><?php _e( 'Source Info' ); ?></h4>
 	<?php				       				       						  
         foreach ($this->fields as $field) {
-		echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';
+		
+		$value = get_post_meta( $order->id, '_grow_'.$field, true ) ;
+		
+		if ( ! empty( $value ) ) {
+			echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';
+		}
         }
 	?>				       
     </div>

@@ -160,7 +160,7 @@ class Grow_Custom
 // display the extra data in the order admin panel
 public function display_order_source( $order ){  ?>
     <div class="order_data_column">
-	<h4><?php _e( 'Source Info' ); ?></h4>
+	<h3><?php _e( 'Source Info' ); ?></h3>
 	<?php				       				       						  
         foreach ($this->fields as $field) {
 		
@@ -168,16 +168,16 @@ public function display_order_source( $order ){  ?>
 
 		// referer url
        		if ( 'url' == $field && '(none)' !== $value ) {
-           		echo '<p><strong>referer:</strong><br/>' . get_post_meta( $order->id, '_grow_referer', true ) . '</p>';
+           		echo '<p class="form-field form-field-wide"><label>referer:</label>' . get_post_meta( $order->id, '_grow_referer', true ) . '</p>';
        		}
 
 		// source type
        		if ( 'type' == $field && '(none)' !== $value ) {
-           		echo '<p><strong>source_type:</strong><br/>' . get_post_meta( $order->id, '_grow_source_type', true ) . '</p>';
+           		echo '<p class="form-field form-field-wide"><label>source_type:</label>' . get_post_meta( $order->id, '_grow_source_type', true ) . '</p>';
        		}
 		
 		if ( ! empty( $value ) ) {
-			echo '<p><strong>' . $field . ':</strong><br/>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';
+			echo '<p class="form-field form-field-wide"><label>' . $field . ':</label>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';
 		}
         }
 	?>				       

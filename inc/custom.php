@@ -165,6 +165,16 @@ public function display_order_source( $order ){  ?>
         foreach ($this->fields as $field) {
 		
 		$value = get_post_meta( $order->id, '_grow_'.$field, true ) ;
+
+		// referer url
+       		if ( 'url' == $field && '(none)' !== $value ) {
+           		echo '<p><strong>referer:</strong>' . get_post_meta( $order->id, '_grow_referer', true ) . '</p>';
+       		}
+
+		// source type
+       		if ( 'type' == $field && '(none)' !== $value ) {
+           		echo '<p><strong>source_type:</strong>' . get_post_meta( $order->id, '_grow_source_type', true ) . '</p>';
+       		}
 		
 		if ( ! empty( $value ) ) {
 			echo '<p><strong>' . $field . ':</strong>' . get_post_meta( $order->id, '_grow_'.$field, true ) . '</p>';

@@ -1,82 +1,45 @@
 <?php
 /**
- * Plugin Name: Grow Helper
+ * Plugin Name: Grow Order Attribute Prototype
  * Plugin URI: https://woogrowp2.wordpress.com/
  * Description: Test
  * Version: 0.1.0
  * Author: Grow
  * Author URI: https://woogrowp2.wordpress.com/
- * Text Domain: grow-helper
+ * Text Domain: grow-oap
  * WC requires at least: 2.6.0
  * WC tested up to: 5.5.0.
  */
-class Grow_Helper
-{
-    /**
-     * Current version of Grow Helper.
-     */
-    public $version = '0.1.0';
 
-    /**
-     * URL dir for plugin.
-     */
-    public $url;
+use Automattic\WooCommerce\Grow\OrderAttributePrototype\Autoloader;
+use Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal\PluginFactory;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
-    /**
-     * The single instance of the class.
-     */
-    protected static $_instance = null;
+defined( 'ABSPATH' ) || exit;
 
-    /**
-     * Main Helper Instance.
-     *
-     * Ensures only one instance of the Helper is loaded or can be loaded.
-     *
-     * @return Helper - Main instance.
-     */
-    public static function instance()
-    {
-        if (is_null(self::$_instance)) {
-            self::$_instance = new self();
-        }
+define( 'WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_VERSION', '0.1.0' ); // WRCS: DEFINED_VERSION.
+define( 'WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE', __FILE__ );
 
-        return self::$_instance;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        add_action('plugins_loaded', array($this, 'init'));
-
-        // Set URL
-        $this->url = plugin_dir_url(__FILE__);
-    }
-
-    /**
-     * Start plugin.
-     */
-    public function init()
-    {
-        if (class_exists('WooCommerce')) {
-
-            // Require files for the plugin
-            require_once 'inc/custom.php';
-        }
-
-        // Plugin textdomain
-        load_plugin_textdomain('grow-helper', false, basename(dirname(__FILE__)).'/languages/');
-    }
-
+// Load and initialize the autoloader.
+require_once __DIR__ . '/src/Autoloader.php';
+if ( ! Autoloader::init() ) {
+	return;
 }
 
-/**
- * For plugin-wide access to initial instance.
- */
-function Grow_Helper()
-{
-    return Grow_Helper::instance();
-}
+// Declare incompatibility with HPOS for now.
+add_action(
+	'before_woocommerce_init',
+	function() {
+		if ( class_exists( FeaturesUtil::class ) ) {
+			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, false );
+		}
+	}
+);
 
-Grow_Helper();
+// Hook much of our plugin after WooCommerce is loaded.
+add_action(
+	'woocommerce_loaded',
+	function() {
+		PluginFactory::instance()->register();
+	}
+);

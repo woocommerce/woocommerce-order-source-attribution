@@ -3,6 +3,8 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal;
 
+use WC_Order;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -178,6 +180,13 @@ final class Plugin {
 		return "{$this->field_prefix}{$field}";
 	}
 
+	/**
+	 * Display the source data template for the order.
+	 *
+	 * @param WC_Order $order
+	 *
+	 * @return void
+	 */
 	private function display_source_data( $order ) {
 		include dirname( WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE ) . '/templates/source-data-fields.php';
 	}

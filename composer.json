@@ -2,5 +2,18 @@
     "name": "grow/order-attribution-prototype",
     "type": "wordpress-plugin",
     "license": "GPL-3",
-    "require": {}
+    "require": {
+        "php": ">=7.4",
+        "automattic/jetpack-autoloader": "^2.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Automattic\\WooCommerce\\Grow\\OrderAttributePrototype\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "automattic/jetpack-autoloader": true
+        }
+    }
 }

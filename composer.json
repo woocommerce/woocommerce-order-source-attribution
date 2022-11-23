@@ -1,0 +1,6 @@
+{
+    "name": "grow/order-attribution-prototype",
+    "type": "wordpress-plugin",
+    "license": "GPL-3",
+    "require": {}
+}

@@ -1,14 +1,20 @@
 <?php
 /**
  * Plugin Name: Grow Order Attribute Prototype
- * Plugin URI: https://woogrowp2.wordpress.com/
- * Description: Test
+ * Plugin URI: https://woomultichannel.wordpress.com/2022/11/07/project-thread-order-attribution-source-prototype/
+ * Description: Prototyping Order Attribution tracking.
  * Version: 0.1.0
  * Author: Grow
  * Author URI: https://woogrowp2.wordpress.com/
  * Text Domain: grow-oap
- * WC requires at least: 2.6.0
- * WC tested up to: 5.5.0.
+ * Requires at least: 5.8
+ * Tested up to: 6.1
+ * Requires PHP: 7.4
+ *
+ * WC requires at least: 7.0
+ * WC tested up to: 7.1
+ * Woo:
+ *
  */
 
 use Automattic\WooCommerce\Grow\OrderAttributePrototype\Autoloader;

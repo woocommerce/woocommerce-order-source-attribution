@@ -1,10 +1,16 @@
-( function ( $ ) {
+( function ( $, grow_params ) {
+	'use strict';
+
+	const prefix = grow_params.prefix;
+	const cookieLifetime = Number(grow_params.lifetime);
+	const sessionLength = Number(grow_params.session);
+
 	/**
 	 * Initialize sourcebuster.js.
 	 */
 	sbjs.init( {
-		lifetime: grow_params.life,
-		session_length: grow_params.session,
+		lifetime: cookieLifetime,
+		session_length: sessionLength,
 		timezone_offset: '0', // utc
 	} );
 
@@ -14,29 +20,29 @@
 	var setFields = function () {
 
 		if ( sbjs.get ) {
-			$( 'input[name="grow_source_type"]' ).val( sbjs.get.current.typ );
-			$( 'input[name="grow_source_url"]' ).val( sbjs.get.current_add.rf );
+			$( `input[name="${prefix}type"]` ).val( sbjs.get.current.typ );
+			$( `input[name="${prefix}url"]` ).val( sbjs.get.current_add.rf );
 
-			$( 'input[name="grow_source_utm_campaign"]' ).val( sbjs.get.current.cmp );
-			$( 'input[name="grow_source_utm_source"]' ).val( sbjs.get.current.src );
-			$( 'input[name="grow_source_utm_medium"]' ).val( sbjs.get.current.mdm );
-			$( 'input[name="grow_source_utm_content"]' ).val( sbjs.get.current.cnt );
-			$( 'input[name="grow_source_utm_id"]' ).val( sbjs.get.current.id );
-			$( 'input[name="grow_source_utm_term"]' ).val( sbjs.get.current.trm );
+			$( `input[name="${prefix}utm_campaign"]` ).val( sbjs.get.current.cmp );
+			$( `input[name="${prefix}utm_source"]` ).val( sbjs.get.current.src );
+			$( `input[name="${prefix}utm_medium"]` ).val( sbjs.get.current.mdm );
+			$( `input[name="${prefix}utm_content"]` ).val( sbjs.get.current.cnt );
+			$( `input[name="${prefix}utm_id"]` ).val( sbjs.get.current.id );
+			$( `input[name="${prefix}utm_term"]` ).val( sbjs.get.current.trm );
 
-			$( 'input[name="grow_source_session_entry"]' ).val( sbjs.get.current_add.ep );
-			$( 'input[name="grow_source_session_start_time"]' ).val( sbjs.get.current_add.fd );
-			$( 'input[name="grow_source_session_pages"]' ).val( sbjs.get.session.pgs );
-			$( 'input[name="grow_source_session_count"]' ).val( sbjs.get.udata.vst );
+			$( `input[name="${prefix}session_entry"]` ).val( sbjs.get.current_add.ep );
+			$( `input[name="${prefix}session_start_time"]` ).val( sbjs.get.current_add.fd );
+			$( `input[name="${prefix}session_pages"]` ).val( sbjs.get.session.pgs );
+			$( `input[name="${prefix}session_count"]` ).val( sbjs.get.udata.vst );
 
-			$( 'input[name="grow_source_user_agent"]' ).val( sbjs.get.udata.uag );
+			$( `input[name="${prefix}user_agent"]` ).val( sbjs.get.udata.uag );
 		}
 	};
 
 	/**
 	 * Add source values to checkout.
 	 */
-	$( document.body ).on( 'init_checkout', function ( event ) {
+	$( document.body ).on( 'init_checkout', function () {
 		setFields();
 	} );
 
@@ -47,4 +53,4 @@
 		setFields();
 	}
 
-} )( jQuery );
+} )( jQuery, window.grow_params );

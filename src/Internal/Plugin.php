@@ -1,4 +1,5 @@
 <?php
+
 declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal;
@@ -121,6 +122,7 @@ final class Plugin {
 			'lifetime' => (int) apply_filters( 'grow_oat_cookie_lifetime_months', 6 ),
 			'session'  => (int) apply_filters( 'grow_oat_session_length_minutes', 30 ),
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
+			'prefix'   => $this->field_prefix,
 		];
 
 		wp_localize_script( 'grow-js', 'grow_params', $params );

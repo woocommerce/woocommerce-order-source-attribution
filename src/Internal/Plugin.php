@@ -4,6 +4,8 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal;
 
+use Exception;
+use WC_Customer;
 use WC_Order;
 
 defined( 'ABSPATH' ) || exit;
@@ -74,15 +76,20 @@ final class Plugin {
 
 		// Update data based on submitted fields.
 		add_action(
-			'woocommerce_checkout_update_order_meta',
-			function ( $order_id ) {
-				$this->set_source_data( $order_id, 'order' );
+			'woocommerce_checkout_order_created',
+			function ( $order ) {
+				$this->set_order_source_data( $order );
 			}
 		);
 		add_action(
 			'user_register',
 			function ( $customer_id ) {
-				$this->set_source_data( $customer_id, 'customer' );
+				try {
+					$customer = new WC_Customer( $customer_id );
+					$this->set_customer_source_data( $customer );
+				} catch ( Exception $e ) {
+					// todo: Some exception handling?
+				}
 			}
 		);
 
@@ -138,39 +145,64 @@ final class Plugin {
 	}
 
 	/**
-	 * Set source data.
+	 * @param WC_Customer $customer
+	 *
+	 * @return void
 	 */
-	private function set_source_data( $id, $resource ) {
+	private function set_customer_source_data( WC_Customer $customer ) {
+		foreach ( $this->get_source_values() as $key => $value ) {
+			$customer->add_meta_data( $key, $value );
+		}
+
+		$customer->save_meta_data();
+	}
+
+	/**
+	 * @param WC_Order $order
+	 *
+	 * @return void
+	 */
+	private function set_order_source_data( WC_Order $order ) {
+		foreach ( $this->get_source_values() as $key => $value ) {
+			$order->add_meta_data( $key, $value );
+		}
+
+		$order->save_meta_data();
+	}
+
+	/**
+	 * Map posted values to meta values.
+	 *
+	 * @return array
+	 */
+	private function get_source_values(): array {
 		$values = [];
 
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
-			$values[ $field ] = sanitize_text_field( $_POST[ $this->prefix_field( $field ) ] ?? '' );
-		}
-
-		// update function based on order or customer
-		$update_function = $resource == 'order' ? 'update_post_meta' : 'update_user_meta';
-
-		// Handle storing each field.
-		foreach ( $values as $key => $value ) {
+			$value = sanitize_text_field( $_POST[ $this->prefix_field( $field ) ] ?? '' );
 			if ( '(none)' === $value ) {
 				continue;
 			}
 
-			switch ( $key ) {
+			switch ( $field ) {
 				case 'type':
-					call_user_func_array( $update_function, [ $id, '_grow_source_type', $value ] );
+					$meta_key = '_grow_source_type';
 					break;
 
 				case 'url':
-					call_user_func_array( $update_function, [ $id, '_grow_referrer', $value ] );
+					$meta_key = '_grow_referrer';
 					break;
 
 				default:
-					call_user_func_array( $update_function, [ $id, "_grow_{$key}", $value ] );
+					$meta_key = "_grow_{$field}";
 					break;
 			}
+
+			$values[ $meta_key ] = $value;
 		}
+
+		return $values;
 	}
 
 	/**

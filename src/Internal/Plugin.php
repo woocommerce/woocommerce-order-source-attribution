@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal;
 
+use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
 use WC_Order;
@@ -93,11 +94,11 @@ final class Plugin {
 			}
 		);
 
-		// Display the source data.
+		// Add our source data to the order display.
 		add_action(
-			'woocommerce_admin_order_data_after_order_details',
-			function ( $order ) {
-				$this->display_source_data( $order );
+			'add_meta_boxes',
+			function() {
+				$this->add_meta_box();
 			}
 		);
 	}
@@ -223,5 +224,27 @@ final class Plugin {
 	 */
 	private function display_source_data( $order ) {
 		include dirname( WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE ) . '/templates/source-data-fields.php';
+	}
+
+	/**
+	 * Add our own meta box to the order display screen.
+	 *
+	 * @return void
+	 */
+	private function add_meta_box() {
+		add_meta_box(
+			'woocommerce-order-source-data',
+			__( 'Order Source Data', 'grow-oat' ),
+			function ( $post ) {
+				global $theorder;
+
+				OrderUtil::init_theorder_object( $post );
+				$order = $theorder;
+
+				$this->display_source_data( $order );
+			},
+			'shop_order',
+			'normal'
+		);
 	}
 }

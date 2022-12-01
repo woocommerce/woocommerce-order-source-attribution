@@ -10,47 +10,43 @@ defined( 'ABSPATH' ) || exit;
  *
  * @see Plugin
  *
- * @var Plugin   $this
- * @var WC_Order $order
+ * @var Plugin         $this
+ * @var WC_Order       $order
+ * @var WC_Meta_Data[] $meta
  */
 
-$fields = $this->fields;
-$meta   = array_filter(
-	get_post_meta( $order->get_id() ),
-	function ( $key ) {
-		return str_starts_with( $key, '_grow_' );
-	},
-	ARRAY_FILTER_USE_KEY
+$meta = array_filter(
+	$order->get_meta_data(),
+	function ( WC_Meta_Data $meta ) {
+		return str_starts_with( $meta->key, '_grow_' );
+	}
 );
 
 ?>
 
-<div class="source_data form-field form-field-waide">
+<div class="source_data form-field form-field-wide">
 	<h3><?php _e( 'Source Info', 'grow-oap' ); ?></h3>
 
 	<?php
-	foreach ( $fields as $field ) {
-		if ( ! array_key_exists( $field, $meta ) ) {
-			continue;
-		}
-
-		switch ( $field ) {
-			case 'url':
+	foreach ( $meta as $item ) {
+		switch ( $item->key ) {
+			case '_grow_referrer':
 				$label = __( 'Referrer', 'grow-oap' );
 				break;
 
-			case 'type':
+			case '_grow_source_type':
 				$label = __( 'Source type', 'grow-oap' );
 				break;
 
 			default:
-				$label = strtoupper( $field );
+				$label = str_replace( [ '_grow_', '_' ], [ '', ' ' ], $item->key );
+				$label = ucwords( $label );
 				break;
 		}
 		?>
 		<p class="form-field form-field-wide">
 			<label><?php echo esc_html( $label ); ?>:</label>
-			<?php echo esc_html( $meta[ $field ] ); ?>
+			<?php echo esc_html( $item->value ); ?>
 		</p>
 		<?php
 	}

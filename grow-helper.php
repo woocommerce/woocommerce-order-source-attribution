@@ -32,12 +32,12 @@ if ( ! Autoloader::init() ) {
 	return;
 }
 
-// Declare incompatibility with HPOS for now.
+// Declare compatibility with HPOS.
 add_action(
 	'before_woocommerce_init',
 	function() {
 		if ( class_exists( FeaturesUtil::class ) ) {
-			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, false );
+			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__ );
 		}
 	}
 );

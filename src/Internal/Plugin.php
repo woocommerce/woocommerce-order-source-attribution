@@ -234,7 +234,7 @@ final class Plugin {
 	private function add_meta_box() {
 		add_meta_box(
 			'woocommerce-order-source-data',
-			__( 'Order Source Data', 'grow-oat' ),
+			__( 'Order Source Data', 'woocommerce-order-source-attribution' ),
 			function ( $post ) {
 				global $theorder;
 

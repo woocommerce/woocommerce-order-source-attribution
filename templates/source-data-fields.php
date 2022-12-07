@@ -25,17 +25,17 @@ $meta = array_filter(
 ?>
 
 <div class="source_data form-field form-field-wide">
-	<h3><?php _e( 'Source Info', 'grow-oap' ); ?></h3>
+	<h3><?php _e( 'Source Info', 'woocommerce-order-source-attribution' ); ?></h3>
 
 	<?php
 	foreach ( $meta as $item ) {
 		switch ( $item->key ) {
 			case '_grow_referrer':
-				$label = __( 'Referrer', 'grow-oap' );
+				$label = __( 'Referrer', 'woocommerce-order-source-attribution' );
 				break;
 
 			case '_grow_source_type':
-				$label = __( 'Source type', 'grow-oap' );
+				$label = __( 'Source type', 'woocommerce-order-source-attribution' );
 				break;
 
 			default:

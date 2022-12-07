@@ -6,7 +6,7 @@
  * Version: 0.1.0
  * Author: Grow
  * Author URI: https://woogrowp2.wordpress.com/
- * Text Domain: grow-oap
+ * Text Domain: woocommerce-order-source-attribution
  * Requires at least: 5.8
  * Tested up to: 6.1
  * Requires PHP: 7.4

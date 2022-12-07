@@ -48,7 +48,7 @@ class Autoloader {
 	protected static function missing_autoloader() {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions
-				esc_html__( 'Your installation of Order Attribute Prototype is incomplete. If you installed from GitHub, please refer to this document to set up your development environment: https://github.com/woocommerce/woocommerce/wiki/How-to-set-up-WooCommerce-development-environment', 'grow-oap' )
+				esc_html__( 'Your installation of Order Attribute Prototype is incomplete. If you installed from GitHub, please refer to this document to set up your development environment: https://github.com/woocommerce/woocommerce/wiki/How-to-set-up-WooCommerce-development-environment', 'woocommerce-order-source-attribution' )
 			);
 		}
 		add_action(
@@ -60,7 +60,7 @@ class Autoloader {
 						<?php
 						printf(
 							/* translators: 1: is a link to a support document. 2: closing link */
-							esc_html__( 'Your installation of Order Attribute Prototype is incomplete. If you installed from GitHub, %1$splease refer to this document%2$s to set up your development environment.', 'grow-oap' ),
+							esc_html__( 'Your installation of Order Attribute Prototype is incomplete. If you installed from GitHub, %1$splease refer to this document%2$s to set up your development environment.', 'woocommerce-order-source-attribution' ),
 							'<a href="' . esc_url( 'https://github.com/woocommerce/woocommerce/wiki/How-to-set-up-WooCommerce-development-environment' ) . '" target="_blank" rel="noopener noreferrer">',
 							'</a>'
 						);

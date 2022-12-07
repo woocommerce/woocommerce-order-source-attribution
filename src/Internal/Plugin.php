@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal;
+namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;

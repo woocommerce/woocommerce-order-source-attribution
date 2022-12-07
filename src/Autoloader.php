@@ -3,7 +3,7 @@
  * Includes the composer Autoloader used for packages and classes in the src/ directory.
  */
 
-namespace Automattic\WooCommerce\Grow\OrderAttributePrototype;
+namespace Automattic\WooCommerce\OrderSourceAttribution;
 
 defined( 'ABSPATH' ) || exit;
 

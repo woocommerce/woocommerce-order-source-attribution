@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Automattic\\WooCommerce\\Grow\\OrderAttributePrototype\\": "src/"
+            "Automattic\\WooCommerce\\OrderSourceAttribution\\": "src/"
         }
     },
     "config": {

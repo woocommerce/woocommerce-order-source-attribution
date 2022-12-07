@@ -1,5 +1,5 @@
 {
-    "name": "grow/order-attribution-prototype",
+    "name": "woocommerce/woocommerce-order-source-attribution",
     "type": "wordpress-plugin",
     "license": "GPL-3",
     "require": {

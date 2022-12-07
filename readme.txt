@@ -1,8 +1,8 @@
 === Grow Helper for WooCommerce ===
-Contributors: grow
+Contributors: automattic
 Tags: woocommerce
 Requires at least: 4.4.0
-Requires PHP: 5.6.20
+Requires PHP: 7.2
 Tested up to: 6.1.0
 Stable tag: trunk
 License: GPLv3

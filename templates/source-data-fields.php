@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 $meta = array_filter(
 	$order->get_meta_data(),
 	function ( WC_Meta_Data $meta ) {
-		return str_starts_with( $meta->key, '_grow_' );
+		return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
 	}
 );
 
@@ -30,16 +30,16 @@ $meta = array_filter(
 	<?php
 	foreach ( $meta as $item ) {
 		switch ( $item->key ) {
-			case '_grow_referrer':
+			case '_wc_order_source_attribution_referrer':
 				$label = __( 'Referrer', 'woocommerce-order-source-attribution' );
 				break;
 
-			case '_grow_source_type':
+			case '_wc_order_source_attribution_source_type':
 				$label = __( 'Source type', 'woocommerce-order-source-attribution' );
 				break;
 
 			default:
-				$label = str_replace( [ '_grow_', '_' ], [ '', ' ' ], $item->key );
+				$label = str_replace( [ '_wc_order_source_attribution_', '_' ], [ '', ' ' ], $item->key );
 				$label = ucwords( $label );
 				break;
 		}

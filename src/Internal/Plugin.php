@@ -50,8 +50,8 @@ final class Plugin {
 	 * Plugin constructor.
 	 */
 	public function __construct() {
-		$this->fields       = (array) apply_filters( 'grow_oat_tracking_fields', $this->default_fields );
-		$this->field_prefix = (string) apply_filters( 'grow_oat_tracking_field_prefix', 'grow_oap_' );
+		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
+		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
 	}
 
 	/**
@@ -109,17 +109,17 @@ final class Plugin {
 	private function enqueue_scripts_and_styles() {
 		wp_enqueue_script(
 			'sourcebuster-js',
-			plugins_url( 'assets/js/sourcebuster.min.js', WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE ),
+			plugins_url( 'assets/js/sourcebuster.min.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
 			[ 'jquery' ],
-			WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_VERSION,
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
 			true
 		);
 
 		wp_enqueue_script(
-			'grow-js',
-			plugins_url( 'assets/js/grow.js', WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE ),
+			'woocommerce-order-attribute-source-js',
+			plugins_url( 'assets/js/woocommerce-order-attribute-source.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
 			[ 'jquery' ],
-			WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_VERSION,
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
 			true
 		);
 
@@ -127,13 +127,13 @@ final class Plugin {
 		 * Pass parameters to Grow JS.
 		 */
 		$params = [
-			'lifetime' => (int) apply_filters( 'grow_oat_cookie_lifetime_months', 6 ),
-			'session'  => (int) apply_filters( 'grow_oat_session_length_minutes', 30 ),
+			'lifetime' => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
+			'session'  => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 			'prefix'   => $this->field_prefix,
 		];
 
-		wp_localize_script( 'grow-js', 'grow_params', $params );
+		wp_localize_script( 'woocommerce-order-attribute-source-js', 'wc_order_attribute_source_params', $params );
 	}
 
 	/**
@@ -188,15 +188,15 @@ final class Plugin {
 
 			switch ( $field ) {
 				case 'type':
-					$meta_key = '_grow_source_type';
+					$meta_key = '_wc_order_source_attribution_source_type';
 					break;
 
 				case 'url':
-					$meta_key = '_grow_referrer';
+					$meta_key = '_wc_order_source_attribution_referrer';
 					break;
 
 				default:
-					$meta_key = "_grow_{$field}";
+					$meta_key = "_wc_order_source_attribution_{$field}";
 					break;
 			}
 
@@ -223,7 +223,7 @@ final class Plugin {
 	 * @return void
 	 */
 	private function display_source_data( $order ) {
-		include dirname( WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE ) . '/templates/source-data-fields.php';
+		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/source-data-fields.php';
 	}
 
 	/**

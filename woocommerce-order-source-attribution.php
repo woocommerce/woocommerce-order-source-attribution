@@ -23,8 +23,8 @@ use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_VERSION', '0.1.0' ); // WRCS: DEFINED_VERSION.
-define( 'WC_GROW_ORDER_ATTRIBUTE_PROTOTYPE_FILE', __FILE__ );
+define( 'WC_ORDER_ATTRIBUTE_SOURCE_VERSION', '0.1.0' ); // WRCS: DEFINED_VERSION.
+define( 'WC_ORDER_ATTRIBUTE_SOURCE_FILE', __FILE__ );
 
 // Load and initialize the autoloader.
 require_once __DIR__ . '/src/Autoloader.php';

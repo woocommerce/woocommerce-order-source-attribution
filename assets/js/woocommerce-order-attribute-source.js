@@ -1,9 +1,9 @@
-( function ( $, grow_params ) {
+( function ( $, params ) {
 	'use strict';
 
-	const prefix = grow_params.prefix;
-	const cookieLifetime = Number(grow_params.lifetime);
-	const sessionLength = Number(grow_params.session);
+	const prefix = params.prefix;
+	const cookieLifetime = Number(params.lifetime);
+	const sessionLength = Number(params.session);
 
 	/**
 	 * Initialize sourcebuster.js.
@@ -53,4 +53,4 @@
 		setFields();
 	}
 
-} )( jQuery, window.grow_params );
+} )( jQuery, window.wc_order_attribute_source_params );

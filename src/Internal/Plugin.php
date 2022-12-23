@@ -7,7 +7,9 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
+use WC_Meta_Data;
 use WC_Order;
+use WP_User;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -101,6 +103,23 @@ final class Plugin {
 				$this->add_meta_box();
 			}
 		);
+
+		// Add output to the User display page.
+		$customer_meta_boxes = function( WP_User $user) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				return;
+			}
+
+			try {
+				$customer = new WC_Customer( $user->ID );
+				$this->display_customer_source_data( $customer );
+			} catch ( Exception $e ) {
+				// todo: Some exception handling?
+			}
+		};
+
+		add_action( 'show_user_profile', $customer_meta_boxes );
+		add_action( 'edit_user_profile', $customer_meta_boxes );
 	}
 
 	/**
@@ -222,7 +241,32 @@ final class Plugin {
 	 *
 	 * @return void
 	 */
-	private function display_source_data( $order ) {
+	private function display_order_source_data( WC_Order $order ) {
+		$meta = $this->filter_meta_data( $order->get_meta_data() );
+
+		// If we don't have any meta to show, return.
+		if ( empty( $meta ) ) {
+			return;
+		}
+
+		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/source-data-fields.php';
+	}
+
+	/**
+	 * Display the source data template for the customer.
+	 *
+	 * @param WC_Customer $customer
+	 *
+	 * @return void
+	 */
+	private function display_customer_source_data( WC_Customer $customer ) {
+		$meta = $this->filter_meta_data( $customer->get_meta_data() );
+
+		// If we don't have any meta to show, return.
+		if ( empty( $meta ) ) {
+			return;
+		}
+
 		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/source-data-fields.php';
 	}
 
@@ -241,10 +285,26 @@ final class Plugin {
 				OrderUtil::init_theorder_object( $post );
 				$order = $theorder;
 
-				$this->display_source_data( $order );
+				$this->display_order_source_data( $order );
 			},
 			'shop_order',
 			'normal'
+		);
+	}
+
+	/**
+	 * Filter the meta data to only the keys that we care about.
+	 *
+	 * @param WC_Meta_Data[] $meta
+	 *
+	 * @return array
+	 */
+	private function filter_meta_data( array $meta ): array {
+		return array_filter(
+			$meta,
+			function ( WC_Meta_Data $meta ) {
+				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
+			}
 		);
 	}
 }

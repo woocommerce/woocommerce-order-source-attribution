@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
@@ -287,7 +288,7 @@ final class Plugin {
 
 				$this->display_order_source_data( $order );
 			},
-			'shop_order',
+			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
 			'normal'
 		);
 	}
@@ -306,5 +307,21 @@ final class Plugin {
 				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
 			}
 		);
+	}
+
+	/**
+	 * Check to see if HPOS is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_hpos_enabled(): bool {
+		try {
+			/** @var CustomOrdersTableController $cot_controller */
+			$cot_controller = wc_get_container()->get( CustomOrdersTableController::class );
+
+			return $cot_controller->custom_orders_table_usage_is_enabled();
+		} catch ( Exception $e ) {
+			return false;
+		}
 	}
 }

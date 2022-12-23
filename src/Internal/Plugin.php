@@ -7,6 +7,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
+use WC_Meta_Data;
 use WC_Order;
 
 defined( 'ABSPATH' ) || exit;
@@ -222,7 +223,14 @@ final class Plugin {
 	 *
 	 * @return void
 	 */
-	private function display_source_data( $order ) {
+	private function display_order_source_data( WC_Order $order ) {
+		$meta = array_filter(
+			$order->get_meta_data(),
+			function ( WC_Meta_Data $meta ) {
+				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
+			}
+		);
+
 		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/source-data-fields.php';
 	}
 
@@ -241,7 +249,7 @@ final class Plugin {
 				OrderUtil::init_theorder_object( $post );
 				$order = $theorder;
 
-				$this->display_source_data( $order );
+				$this->display_order_source_data( $order );
 			},
 			'shop_order',
 			'normal'

@@ -106,6 +106,10 @@ final class Plugin {
 
 		// Add output to the User display page.
 		$customer_meta_boxes = function( WP_User $user) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				return;
+			}
+
 			try {
 				$customer = new WC_Customer( $user->ID );
 				$this->display_customer_source_data( $customer );

@@ -1,27 +1,13 @@
 <?php
 declare( strict_types=1 );
 
-use Automattic\WooCommerce\Grow\OrderAttributePrototype\Internal\Plugin;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Variables used in this file.
  *
- * @see Plugin
- *
- * @var Plugin         $this
- * @var WC_Order       $order
  * @var WC_Meta_Data[] $meta
  */
-
-$meta = array_filter(
-	$order->get_meta_data(),
-	function ( WC_Meta_Data $meta ) {
-		return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
-	}
-);
-
 ?>
 
 <div class="source_data form-field form-field-wide">

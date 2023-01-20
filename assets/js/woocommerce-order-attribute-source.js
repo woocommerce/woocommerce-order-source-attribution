@@ -10,7 +10,7 @@
 	// init
 	woocommerce_order_source_attribution.initOrderTracking = function() {
 
-		if ( typeof window.allowTracking === 'undefined' || window.allowTracking === false ) {
+		if ( typeof window.allowTracking !== 'undefined' && window.allowTracking === false ) {
 			return;
 		}
 

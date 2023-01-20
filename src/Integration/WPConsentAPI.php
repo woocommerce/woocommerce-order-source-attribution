@@ -48,9 +48,23 @@ class WPConsentAPI {
             null,
             [ 'jquery' ],
             WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
-            false
+            true
         );
         wp_enqueue_script( 'wp-consent-api-integration-js' );
+    }
+
+    /**
+     * Instance of WPConsentAPI
+     *
+     * @return WPConsentAPI
+     * @since x.x.x
+     */
+    public static function instance() {
+        static $instance = null;
+        if ( is_null( $instance ) ) {
+            $instance = new self();
+        }
+        return $instance;
     }
 
 }

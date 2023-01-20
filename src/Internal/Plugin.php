@@ -66,8 +66,7 @@ final class Plugin {
 	public function register() {
 
         // Register WPConsentAPI
-        $wp_consent_api = new WPConsentAPI();
-        $wp_consent_api->register();
+        WPConsentAPI::instance()->register();
 
 		add_action(
 			'wp_enqueue_scripts',

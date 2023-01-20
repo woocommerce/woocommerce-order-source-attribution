@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
@@ -63,6 +64,11 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register() {
+
+        // Register WPConsentAPI
+        $wp_consent_api = new WPConsentAPI();
+        $wp_consent_api->register();
+
 		add_action(
 			'wp_enqueue_scripts',
 			function () {
@@ -121,6 +127,7 @@ final class Plugin {
 
 		add_action( 'show_user_profile', $customer_meta_boxes );
 		add_action( 'edit_user_profile', $customer_meta_boxes );
+
 	}
 
 	/**

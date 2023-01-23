@@ -1,4 +1,4 @@
-=== Grow Helper for WooCommerce ===
+=== WooCommerce Order Source Attribution ===
 Contributors: automattic
 Tags: woocommerce
 Requires at least: 4.4.0
@@ -8,11 +8,10 @@ Stable tag: trunk
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Test extension.
 
 == Description ==
 
-Test extension.
+MVP/Prototype of order attribution/source functionality in WordPress.
 
 == Changelog ==
 = 0.1.0 =

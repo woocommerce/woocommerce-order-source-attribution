@@ -1,7 +1,7 @@
 ( function ( $, params ) {
 	'use strict';
 
-	window.woocommerce_order_source_attribution = {};
+	window.woocommerce_order_source_attribution = window.woocommerce_order_source_attribution || {};
 
 	const prefix = params.prefix;
 	const cookieLifetime = Number(params.lifetime);
@@ -10,7 +10,8 @@
 	// init
 	woocommerce_order_source_attribution.initOrderTracking = function() {
 
-		if ( typeof window.allowTracking !== 'undefined' && window.allowTracking === false ) {
+		if ( typeof window.woocommerce_order_source_attribution.allowTracking !== 'undefined'
+			&& window.woocommerce_order_source_attribution.allowTracking === false ) {
 			return;
 		}
 
@@ -65,4 +66,5 @@
 
 	// Run init.
 	woocommerce_order_source_attribution.initOrderTracking();
+
 } )( jQuery, window.wc_order_attribute_source_params );

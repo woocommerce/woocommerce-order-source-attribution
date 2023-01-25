@@ -26,9 +26,14 @@ class WPConsentAPI {
 		if ( ! $this->is_wp_consent_api_active() ) {
 			return;
 		}
-
-		add_filter( "wp_consent_api_registered_{$this->get_plugin_base_name() }", '__return_true' );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_consent_api_scripts' ) );
+		$plugin = $this->get_plugin_base_name();
+		add_filter( "wp_consent_api_registered_{$plugin}", '__return_true' );
+		add_action(
+			'wp_enqueue_scripts',
+			function () {
+				$this->enqueue_consent_api_scripts();
+			}
+		);
 
 	}
 
@@ -48,7 +53,7 @@ class WPConsentAPI {
 	 * @return void
 	 * @since   x.x.x
 	 */
-	public function enqueue_consent_api_scripts() {
+	private function enqueue_consent_api_scripts() {
 		wp_register_script(
 			'wp-consent-api-integration-js',
 			plugins_url( 'assets/js/wp-consent-api-integration.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),

@@ -12,15 +12,15 @@ defined( 'ABSPATH' ) || exit;
  */
 trait Utilities {
 
-    /**
-     * Get plugin base name.
-     *
-     * @return string
-     * @since x.x.x
-     */
-    protected function get_plugin_base_name(){
-        return plugin_basename(WC_ORDER_ATTRIBUTE_SOURCE_FILE);
-    }
+	/**
+	 * Get plugin base name.
+	 *
+	 * @return string
+	 * @since x.x.x
+	 */
+	protected function get_plugin_base_name() {
+		return plugin_basename( WC_ORDER_ATTRIBUTE_SOURCE_FILE );
+	}
 
 }
 

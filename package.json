@@ -8,14 +8,28 @@
     "type": "git",
     "url": "git+https://github.com/woocommerce/woocommerce-order-source-attribution.git"
   },
+  "config": {
+    "translate": true,
+    "version_replace_paths": [
+      "src",
+      "templates",
+      "woocommerce-order-source-attribution.php"
+    ]
+  },
+  "devDependencies": {
+    "node-wp-i18n": "~1.2.3"
+  },
   "bugs": {
     "url": "https://github.com/woocommerce/woocommerce-order-source-attribution/issues"
   },
   "scripts": {
-    "build": "npm run archive",
+    "build": "npm run makepot && npm run archive",
     "prearchive": "rm -rf vendor && composer install --no-dev && composer dump-autoload -o",
     "archive": "composer archive --file=$npm_package_name --format=zip",
-    "postarchive": "rm -rf $npm_package_name && unzip $npm_package_name.zip -d $npm_package_name && rm $npm_package_name.zip && zip -r $npm_package_name.zip $npm_package_name && rm -rf $npm_package_name"
+    "postarchive": "rm -rf $npm_package_name && unzip $npm_package_name.zip -d $npm_package_name && rm $npm_package_name.zip && zip -r $npm_package_name.zip $npm_package_name && rm -rf $npm_package_name",
+    "makepot": "wpi18n makepot --domain-path languages --pot-file $npm_package_name.pot --type plugin --main-file $npm_package_name.php --exclude node_modules,tests,docs",
+    "lint:php": "vendor/bin/phpcs",
+    "lint:php:diff": "./bin/phpcs-diff.sh"
   },
   "engines": {
     "node": ">=10 <=16",

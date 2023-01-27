@@ -51,32 +51,14 @@ final class Plugin {
 	/** @var string */
 	private $field_prefix = '';
 
-	/** @var DebugLogger */
-	private $logger;
-
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
-		/**
-		 * Filters the list of tracking fields.
-		 *
-		 * @since x.x.x
-		 *
-		 * @param array $default_fields Default list of fields.
-		 */
-		$this->fields = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 
-		/**
-		 * Filters the field name prefix.
-		 *
-		 * @since x.x.x
-		 *
-		 * @param string $prefix The prefix string.
-		 */
+		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
 
-		$this->logger = new DebugLogger();
 	}
 
 	/**
@@ -118,8 +100,7 @@ final class Plugin {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
 				} catch ( Exception $e ) {
-					// Log the error.
-					$this->logger->log_exception( $e, __METHOD__ );
+					// todo: Some exception handling?
 				}
 			}
 		);
@@ -142,7 +123,7 @@ final class Plugin {
 				$customer = new WC_Customer( $user->ID );
 				$this->display_customer_source_data( $customer );
 			} catch ( Exception $e ) {
-				$this->logger->log_exception( $e, __METHOD__ );
+				// todo: Some exception handling?
 			}
 		};
 
@@ -175,21 +156,7 @@ final class Plugin {
 		 * Pass parameters to Grow JS.
 		 */
 		$params = [
-			/**
-			 * Filters the cookie lifetime value.
-			 *
-			 * @since x.x.x
-			 *
-			 * @param int $cookie_lifetime Cookie lifetime duration.
-			 */
 			'lifetime' => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
-			/**
-			 * Filters the session length value.
-			 *
-			 * @since x.x.x
-			 *
-			 * @param int $session_length Session length duration.
-			 */
 			'session'  => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 			'prefix'   => $this->field_prefix,

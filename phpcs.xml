@@ -4,6 +4,9 @@
 
 	<!-- Οnly files with a php extension -->
 	<arg name="extensions" value="php" />
+	<file>./woocommerce-order-source-attribution.php</file>
+	<file>./src</file>
+	<file>./templates</file>
 
 	<!-- Exclude Patterns -->
 	<exclude-pattern>*/index.php</exclude-pattern>
@@ -15,6 +18,9 @@
 	<!-- Configs -->
 	<config name="minimum_supported_wp_version" value="5.6" />
 	<config name="testVersion" value="7.3-" />
+
+	<!-- Show progress and sniff codes in all reports -->
+	<arg value="ps"/>
 
 	<!-- Rules -->
 	<rule ref="WooCommerce-Core">

@@ -1,17 +1,17 @@
 ( function ( $, params ) {
 	'use strict';
 
-	window.woocommerce_order_source_attribution = window.woocommerce_order_source_attribution || {};
-
 	const prefix = params.prefix;
 	const cookieLifetime = Number(params.lifetime);
 	const sessionLength = Number(params.session);
 
+
 	// init
+	window.woocommerce_order_source_attribution = {};
+
 	woocommerce_order_source_attribution.initOrderTracking = function() {
 
-		if ( typeof window.woocommerce_order_source_attribution.allowTracking !== 'undefined'
-			&& window.woocommerce_order_source_attribution.allowTracking === false ) {
+		if ( params.allowTracking === 'no' ) {
 			return;
 		}
 
@@ -62,6 +62,15 @@
 		if ( $( '.woocommerce form.register' ).length ) {
 			setFields();
 		}
+	}
+
+	woocommerce_order_source_attribution.setAllowTrackingConsent = function( allow ) {
+		if ( ! allow ) {
+			return;
+		}
+		params.allowTracking = 'yes';
+		woocommerce_order_source_attribution.initOrderTracking();
+
 	}
 
 	// Run init.

@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\OrderSourceAttribution\Integration;
 
 use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\Utilities;
+use WP_CONSENT_API;
 
 /**
  * Class WPConsentAPI

@@ -24,7 +24,6 @@
 
 		<!-- These comments are unnecessary -->
 		<exclude name="WooCommerce.Commenting.CommentHooks"/>
-		<exclude name="Squiz.Commenting.EmptyCatchComment"/>
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 		<exclude name="Squiz.Commenting.FileComment"/>

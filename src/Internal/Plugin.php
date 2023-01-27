@@ -99,6 +99,7 @@ final class Plugin {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
+				// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				} catch ( Exception $e ) {
 					// todo: Some exception handling?
 				}
@@ -122,7 +123,9 @@ final class Plugin {
 			try {
 				$customer = new WC_Customer( $user->ID );
 				$this->display_customer_source_data( $customer );
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( Exception $e ) {
+				// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				// todo: Some exception handling?
 			}
 		};
@@ -210,9 +213,8 @@ final class Plugin {
 
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
-			// phpcs:disable WordPress.Security.NonceVerification.Missing
-			$value = isset( $_POST[ $this->prefix_field( $field ) ] )
-				? sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ) ) : '';
+			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ) ?? '' );
 			if ( '(none)' === $value ) {
 				continue;
 			}

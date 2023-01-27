@@ -162,6 +162,7 @@ final class Plugin {
 			'session'  => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 			'prefix'   => $this->field_prefix,
+			'allowTracking' => wc_bool_to_string( WPConsentAPI::is_wp_consent_api_active() && wp_has_consent('marketing') ),
 		];
 
 		wp_localize_script( 'woocommerce-order-attribute-source-js', 'wc_order_attribute_source_params', $params );

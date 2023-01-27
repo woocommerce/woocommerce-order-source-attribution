@@ -44,7 +44,7 @@ class WPConsentAPI {
 	 * @since x.x.x
 	 */
 	public function is_wp_consent_api_active() {
-		return class_exists( \WP_CONSENT_API::class );
+		return class_exists( WP_CONSENT_API::class );
 	}
 
 	/**

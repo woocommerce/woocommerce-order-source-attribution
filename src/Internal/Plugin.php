@@ -125,7 +125,6 @@ final class Plugin {
 				$this->display_customer_source_data( $customer );
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( Exception $e ) {
-				// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				// todo: Some exception handling?
 			}
 		};

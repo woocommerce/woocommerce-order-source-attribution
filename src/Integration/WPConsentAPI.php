@@ -57,7 +57,6 @@ class WPConsentAPI {
 		wp_register_script(
 			'wp-consent-api-integration-js',
 			plugins_url( 'assets/js/wp-consent-api-integration.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
-			null,
 			[ 'jquery', 'wp-consent-api' ],
 			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
 			true

@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
@@ -53,8 +54,10 @@ final class Plugin {
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+
 		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+
 	}
 
 	/**
@@ -63,6 +66,10 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register() {
+
+		// Register WPConsentAPI
+		( new WPConsentAPI() )->register();
+
 		add_action(
 			'wp_enqueue_scripts',
 			function () {
@@ -91,6 +98,7 @@ final class Plugin {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
+				// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				} catch ( Exception $e ) {
 					// todo: Some exception handling?
 				}
@@ -106,7 +114,7 @@ final class Plugin {
 		);
 
 		// Add output to the User display page.
-		$customer_meta_boxes = function( WP_User $user) {
+		$customer_meta_boxes = function( WP_User $user ) {
 			if ( ! current_user_can( 'manage_woocommerce' ) ) {
 				return;
 			}
@@ -114,6 +122,7 @@ final class Plugin {
 			try {
 				$customer = new WC_Customer( $user->ID );
 				$this->display_customer_source_data( $customer );
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( Exception $e ) {
 				// todo: Some exception handling?
 			}
@@ -121,6 +130,7 @@ final class Plugin {
 
 		add_action( 'show_user_profile', $customer_meta_boxes );
 		add_action( 'edit_user_profile', $customer_meta_boxes );
+
 	}
 
 	/**
@@ -147,10 +157,11 @@ final class Plugin {
 		 * Pass parameters to Grow JS.
 		 */
 		$params = [
-			'lifetime' => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
-			'session'  => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
-			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
-			'prefix'   => $this->field_prefix,
+			'lifetime'      => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
+			'session'       => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
+			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+			'prefix'        => $this->field_prefix,
+			'allowTracking' => wc_bool_to_string( WPConsentAPI::is_wp_consent_api_active() ? wp_has_consent( 'marketing' ) : true ),
 		];
 
 		wp_localize_script( 'woocommerce-order-attribute-source-js', 'wc_order_attribute_source_params', $params );
@@ -201,7 +212,8 @@ final class Plugin {
 
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
-			$value = sanitize_text_field( $_POST[ $this->prefix_field( $field ) ] ?? '' );
+			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ?? '' ) );
 			if ( '(none)' === $value ) {
 				continue;
 			}
@@ -227,7 +239,9 @@ final class Plugin {
 	}
 
 	/**
-	 * @param $field
+	 * Adds prefix to field name.
+	 *
+	 * @param string $field Field name.
 	 *
 	 * @return string
 	 */

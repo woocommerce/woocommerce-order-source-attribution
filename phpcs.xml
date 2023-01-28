@@ -20,6 +20,17 @@
 	<rule ref="WooCommerce-Core">
 		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<exclude name="WordPress.Files.FileName"/>
+
+		<!-- These comments are unnecessary -->
+		<exclude name="WooCommerce.Commenting.CommentHooks"/>
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<exclude name="Squiz.Commenting.FileComment"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+		<exclude name="Squiz.Commenting.LongConditionClosingComment"/>
 	</rule>
 
 	<!-- Specific excludes -->

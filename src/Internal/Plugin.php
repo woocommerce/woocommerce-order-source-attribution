@@ -6,7 +6,6 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
-use Automattic\WooCommerce\OrderSourceAttribution\Logging\DebugLogger;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;

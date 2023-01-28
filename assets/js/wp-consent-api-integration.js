@@ -17,7 +17,7 @@
 	// init order source attribution as soon as consent type defined
 	$(document).on("wp_consent_type_defined", activateOrderTrackingCookies);
 
-	function activateOrderTrackingCookies(consentData) {
+	function activateOrderTrackingCookies() {
 		if (wp_has_consent(consentCategory)) {
 			window.woocommerce_order_source_attribution.setAllowTrackingConsent( true );
 		}

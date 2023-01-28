@@ -214,7 +214,7 @@ final class Plugin {
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
 			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ) ?? '' );
+			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ?? '' ) );
 			if ( '(none)' === $value ) {
 				continue;
 			}

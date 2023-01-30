@@ -31,23 +31,12 @@
 
 		<!-- These comments are unnecessary -->
 		<exclude name="WooCommerce.Commenting.CommentHooks"/>
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 		<exclude name="Squiz.Commenting.FileComment"/>
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
 		<exclude name="Squiz.Commenting.LongConditionClosingComment"/>
-	</rule>
-
-	<!-- Specific excludes -->
-	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>src/*</exclude-pattern>
-		<exclude-pattern>bin/*</exclude-pattern>
-	</rule>
-
-	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
-		<exclude-pattern>src/*</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
@@ -57,8 +46,4 @@
 	</rule>
 
 	<rule ref="PHPCompatibility" />
-
-	<rule ref="Squiz.Commenting.FileComment.Missing">
-		<exclude-pattern>index.asset.php</exclude-pattern>
-	</rule>
 </ruleset>

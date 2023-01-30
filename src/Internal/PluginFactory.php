@@ -24,7 +24,6 @@ final class PluginFactory {
 	public static function instance(): Plugin {
 		static $plugin = null;
 		if ( null === $plugin ) {
-			// TODO: Maybe use some kind of dependency injection here?
 			$logger = new DebugLogger();
 			$plugin = new Plugin( $logger );
 		}

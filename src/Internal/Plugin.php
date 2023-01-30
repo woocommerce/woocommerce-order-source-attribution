@@ -56,8 +56,10 @@ final class Plugin {
 
 	/**
 	 * Plugin constructor.
+	 *
+	 * @param DebugLogger $logger The logger.
 	 */
-	public function __construct(DebugLogger $logger) {
+	public function __construct( DebugLogger $logger ) {
 
 		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );

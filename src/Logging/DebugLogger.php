@@ -3,7 +3,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Logging;
 
 use Exception;
 use WC_Log_Levels;
-use WC_Logger;
+use WC_Logger_Interface;
 
 /**
  * Class DebugLogger
@@ -14,18 +14,16 @@ class DebugLogger implements LoggerInterface {
 	/**
 	 * WooCommerce logger class instance.
 	 *
-	 * @var WC_Logger
+	 * @var WC_Logger_Interface
 	 */
 	private $logger = null;
 
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-		if ( ! function_exists( 'wc_get_logger' ) ) {
-			return;
-		}
-		$this->logger = wc_get_logger();
+	public function __construct( WC_Logger_Interface $logger ) {
+		
+		$this->logger = $logger;
 	}
 
 	/**

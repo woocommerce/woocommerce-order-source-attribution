@@ -24,7 +24,7 @@ final class PluginFactory {
 	public static function instance(): Plugin {
 		static $plugin = null;
 		if ( null === $plugin ) {
-			$logger = new DebugLogger();
+			$logger = new DebugLogger( wc_get_logger() );
 			$plugin = new Plugin( $logger );
 		}
 

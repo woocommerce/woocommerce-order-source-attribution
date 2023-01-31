@@ -16,14 +16,16 @@ class DebugLogger implements LoggerInterface {
 	 *
 	 * @var WC_Logger_Interface
 	 */
-	private $logger = null;
+	private $logger;
 
 	/**
 	 * Constructor.
+	 *
+	 * @param WC_Logger_Interface $wc_logger The WooCommerce logger.
 	 */
-	public function __construct( WC_Logger_Interface $logger ) {
-		
-		$this->logger = $logger;
+	public function __construct( WC_Logger_Interface $wc_logger ) {
+
+		$this->logger = $wc_logger;
 	}
 
 	/**

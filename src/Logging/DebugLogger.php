@@ -1,9 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\OrderSourceAttribution\Logging;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Exception;
 use WC_Log_Levels;
 use WC_Logger;
@@ -37,7 +34,7 @@ class DebugLogger {
 	 * @param Exception $exception
 	 * @param string    $method
 	 */
-	public function log_exception( $exception, string $method ): void {
+	public function log_exception( Exception $exception, string $method ): void {
 		$this->log( $exception->getMessage(), $method, WC_Log_Levels::ERROR );
 	}
 

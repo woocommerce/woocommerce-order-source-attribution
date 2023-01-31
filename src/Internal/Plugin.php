@@ -6,7 +6,6 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
-use Automattic\WooCommerce\OrderSourceAttribution\Logging\DebugLogger;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
@@ -52,7 +51,7 @@ final class Plugin {
 	/** @var string */
 	private $field_prefix = '';
 
-	/** @var DebugLogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	/**

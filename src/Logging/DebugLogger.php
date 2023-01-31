@@ -10,7 +10,7 @@ use WC_Logger;
  *
  * @since x.x.x
  */
-class DebugLogger {
+class DebugLogger implements LoggerInterface {
 	/**
 	 * WooCommerce logger class instance.
 	 *
@@ -39,7 +39,7 @@ class DebugLogger {
 	}
 
 	/**
-	 * Log an exception.
+	 * Log an error.
 	 *
 	 * @param string $message
 	 * @param string $method

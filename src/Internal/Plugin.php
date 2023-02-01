@@ -6,6 +6,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
+use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
@@ -50,13 +51,19 @@ final class Plugin {
 	/** @var string */
 	private $field_prefix = '';
 
+	/** @var LoggerInterface */
+	private $logger;
+
 	/**
 	 * Plugin constructor.
+	 *
+	 * @param LoggerInterface $logger The logger.
 	 */
-	public function __construct() {
+	public function __construct( LoggerInterface $logger ) {
 
 		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+		$this->logger       = $logger;
 
 	}
 
@@ -98,9 +105,8 @@ final class Plugin {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
-				// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 				} catch ( Exception $e ) {
-					// todo: Some exception handling?
+					$this->logger->log_exception( $e, __METHOD__ );
 				}
 			}
 		);
@@ -122,9 +128,8 @@ final class Plugin {
 			try {
 				$customer = new WC_Customer( $user->ID );
 				$this->display_customer_source_data( $customer );
-			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( Exception $e ) {
-				// todo: Some exception handling?
+				$this->logger->log_exception( $e, __METHOD__ );
 			}
 		};
 
@@ -335,6 +340,7 @@ final class Plugin {
 
 			return $cot_controller->custom_orders_table_usage_is_enabled();
 		} catch ( Exception $e ) {
+			$this->logger->log_exception( $e, __METHOD__ );
 			return false;
 		}
 	}

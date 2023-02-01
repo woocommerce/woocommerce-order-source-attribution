@@ -3,6 +3,8 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
+use Automattic\WooCommerce\OrderSourceAttribution\Logging\DebugLogger;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -22,7 +24,8 @@ final class PluginFactory {
 	public static function instance(): Plugin {
 		static $plugin = null;
 		if ( null === $plugin ) {
-			$plugin = new Plugin();
+			$logger = new DebugLogger( wc_get_logger() );
+			$plugin = new Plugin( $logger );
 		}
 
 		return $plugin;

@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="source_data form-field form-field-wide">
-	<h3><?php _e( 'Source Info', 'woocommerce-order-source-attribution' ); ?></h3>
+	<h3><?php esc_html_e( 'Source Info', 'woocommerce-order-source-attribution' ); ?></h3>
 
 	<?php
 	foreach ( $meta as $item ) {

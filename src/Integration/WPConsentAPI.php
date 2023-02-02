@@ -27,12 +27,27 @@ class WPConsentAPI {
 		if ( ! $this->is_wp_consent_api_active() ) {
 			return;
 		}
+
 		$plugin = $this->get_plugin_base_name();
 		add_filter( "wp_consent_api_registered_{$plugin}", '__return_true' );
 		add_action(
 			'wp_enqueue_scripts',
 			function () {
 				$this->enqueue_consent_api_scripts();
+			}
+		);
+
+		// Disable tracking if user has not consented to marketing
+		add_action(
+			'plugins_loaded',
+			function () {
+				$has_consent = function_exists( 'wp_has_consent' ) && wp_has_consent( 'marketing' );
+				add_filter(
+					'wc_order_source_attribution_allow_tracking',
+					function () use ( $has_consent ) {
+						return $has_consent;
+					}
+				);
 			}
 		);
 
@@ -44,7 +59,7 @@ class WPConsentAPI {
 	 * @return bool
 	 * @since x.x.x
 	 */
-	public static function is_wp_consent_api_active() {
+	public function is_wp_consent_api_active() {
 		return class_exists( WP_CONSENT_API::class );
 	}
 

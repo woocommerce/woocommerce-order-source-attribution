@@ -37,7 +37,7 @@ class WPConsentAPI {
 			}
 		);
 
-		// Disable tracking if user has not consented to marketing
+		// Modify the "allowTracking" flag consent if the user has consented to marketing
 		add_action(
 			'plugins_loaded',
 			function () {

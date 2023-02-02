@@ -18,6 +18,7 @@
 
 use Automattic\WooCommerce\OrderSourceAttribution\Autoloader;
 use Automattic\WooCommerce\OrderSourceAttribution\Internal\PluginFactory;
+use Automattic\WooCommerce\OrderSourceAttribution\Settings\SettingsTab;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 defined( 'ABSPATH' ) || exit;
@@ -46,5 +47,6 @@ add_action(
 	'woocommerce_loaded',
 	function() {
 		PluginFactory::instance()->register();
+		SettingsTab::register();
 	}
 );

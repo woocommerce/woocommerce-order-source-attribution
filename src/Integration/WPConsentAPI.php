@@ -27,6 +27,7 @@ class WPConsentAPI {
 		if ( ! $this->is_wp_consent_api_active() ) {
 			return;
 		}
+
 		$plugin = $this->get_plugin_base_name();
 		add_filter( "wp_consent_api_registered_{$plugin}", '__return_true' );
 		add_action(
@@ -34,6 +35,20 @@ class WPConsentAPI {
 			function () {
 				$this->enqueue_consent_api_scripts();
 			}
+		);
+
+		/**
+		 * Modify the "allowTracking" flag consent if the user has consented to marketing.
+		 *
+		 * Wp-consent-api will initialize the modules on "plugins_loaded" with priority 9,
+		 * So this code needs to be run after that.
+		 */
+		add_action(
+			'plugins_loaded',
+			function () {
+				$this->add_wc_order_source_attribution_allow_tracking_filter();
+			},
+			10
 		);
 
 	}
@@ -44,7 +59,7 @@ class WPConsentAPI {
 	 * @return bool
 	 * @since x.x.x
 	 */
-	public static function is_wp_consent_api_active() {
+	private function is_wp_consent_api_active() {
 		return class_exists( WP_CONSENT_API::class );
 	}
 
@@ -63,6 +78,20 @@ class WPConsentAPI {
 			true
 		);
 		wp_enqueue_script( 'wp-consent-api-integration-js' );
+	}
+
+	/**
+	 * Add wc_order_source_attribution_allow_tracking filter.
+	 *
+	 * @return void
+	 */
+	private function add_wc_order_source_attribution_allow_tracking_filter() {
+		add_filter(
+			'wc_order_source_attribution_allow_tracking',
+			function () {
+				return function_exists( 'wp_has_consent' ) && wp_has_consent( 'marketing' );
+			}
+		);
 	}
 
 }

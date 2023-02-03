@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\OrderSourceAttribution\Logging;
 
+use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\Utilities;
 use Exception;
 use WC_Log_Levels;
 use WC_Logger_Interface;
@@ -11,6 +12,9 @@ use WC_Logger_Interface;
  * @since x.x.x
  */
 class DebugLogger implements LoggerInterface {
+
+	use Utilities;
+
 	/**
 	 * WooCommerce logger class instance.
 	 *
@@ -24,7 +28,6 @@ class DebugLogger implements LoggerInterface {
 	 * @param WC_Logger_Interface $wc_logger The WooCommerce logger.
 	 */
 	public function __construct( WC_Logger_Interface $wc_logger ) {
-
 		$this->logger = $wc_logger;
 	}
 
@@ -77,6 +80,10 @@ class DebugLogger implements LoggerInterface {
 	 * @param string $level
 	 */
 	protected function log( string $message, string $method, string $level = WC_Log_Levels::DEBUG ) {
+		if ( ! $this->is_debug_mode_enabled() ) {
+			return;
+		}
+
 		$this->logger->log(
 			$level,
 			sprintf( '%s %s', $method, $message ),

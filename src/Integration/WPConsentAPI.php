@@ -46,13 +46,7 @@ class WPConsentAPI {
 		add_action(
 			'plugins_loaded',
 			function () {
-				$has_consent = function_exists( 'wp_has_consent' ) && wp_has_consent( 'marketing' );
-				add_filter(
-					'wc_order_source_attribution_allow_tracking',
-					function () use ( $has_consent ) {
-						return $has_consent;
-					}
-				);
+				$this->add_wc_order_source_attribution_allow_tracking_filter();
 			},
 			10
 		);
@@ -84,6 +78,20 @@ class WPConsentAPI {
 			true
 		);
 		wp_enqueue_script( 'wp-consent-api-integration-js' );
+	}
+
+	/**
+	 * Add wc_order_source_attribution_allow_tracking filter.
+	 *
+	 * @return void
+	 */
+	private function add_wc_order_source_attribution_allow_tracking_filter() {
+		add_filter(
+			'wc_order_source_attribution_allow_tracking',
+			function () {
+				return function_exists( 'wp_has_consent' ) && wp_has_consent( 'marketing' );
+			}
+		);
 	}
 
 }

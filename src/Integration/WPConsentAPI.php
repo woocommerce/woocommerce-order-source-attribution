@@ -37,7 +37,12 @@ class WPConsentAPI {
 			}
 		);
 
-		// Modify the "allowTracking" flag consent if the user has consented to marketing
+		/**
+		 * Modify the "allowTracking" flag consent if the user has consented to marketing.
+		 *
+		 * wp-consent-api will initialize the modules on "plugins_loaded" with priority 9,
+		 * so this code needs to be run after that.
+		 */
 		add_action(
 			'plugins_loaded',
 			function () {
@@ -48,7 +53,8 @@ class WPConsentAPI {
 						return $has_consent;
 					}
 				);
-			}
+			},
+			10
 		);
 
 	}

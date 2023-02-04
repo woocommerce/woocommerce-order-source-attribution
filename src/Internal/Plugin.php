@@ -356,7 +356,6 @@ final class Plugin {
 	 * @return bool
 	 */
 	private function is_order_source_data_enabled(): bool {
-		$is_enabled = 'yes' === get_option( SettingsTab::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );
-		return (bool) apply_filters( 'wc_order_source_attribution_enable_order_source_data', $is_enabled );
+		return 'yes' === get_option( SettingsTab::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );;
 	}
 }

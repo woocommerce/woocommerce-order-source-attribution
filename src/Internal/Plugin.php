@@ -75,6 +75,10 @@ final class Plugin {
 	 */
 	public function register() {
 
+		// Register our settings tab.
+		( new SettingsTab() )->register();
+
+
 		if ( ! $this->is_order_source_data_enabled() ) {
 			return;
 		}

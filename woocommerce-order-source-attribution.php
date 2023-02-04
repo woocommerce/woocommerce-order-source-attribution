@@ -47,6 +47,5 @@ add_action(
 	'woocommerce_loaded',
 	function() {
 		PluginFactory::instance()->register();
-		SettingsTab::register();
 	}
 );

@@ -87,6 +87,6 @@ class SettingsTab {
 			),
 		);
 
-		return apply_filters( 'wc_order_source_attribution_settings', $settings );
+		return $settings;
 	}
 }

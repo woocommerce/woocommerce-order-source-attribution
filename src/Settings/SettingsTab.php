@@ -17,7 +17,7 @@ class SettingsTab {
 	 */
 	public static function register() {
 		add_filter( 'woocommerce_settings_tabs_array', __CLASS__ . '::add_settings_tab', 50 );
-		add_action( 'woocommerce_settings_tabs_wc_order_source_attribution', __CLASS__ . '::settings_tab' );
+		add_action( 'woocommerce_settings_wc_order_source_attribution', __CLASS__ . '::settings_tab' );
 		add_action( 'woocommerce_update_options_wc_order_source_attribution', __CLASS__ . '::update_settings', 90 );
 	}
 

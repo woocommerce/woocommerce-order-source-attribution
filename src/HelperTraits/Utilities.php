@@ -31,7 +31,7 @@ trait Utilities {
 	 */
 	protected function is_debug_mode_enabled() {
 		$debug_mode = get_option( SettingsTab::SETTINGS_DEBUG_MODE_ID, 'no' );
-		return (bool) apply_filters( 'wc_order_source_attribution_debug_mode', 'yes' === $debug_mode );
+		return 'yes' === $debug_mode;
 	}
 
 }

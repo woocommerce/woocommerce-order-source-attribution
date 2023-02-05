@@ -78,7 +78,6 @@ final class Plugin {
 		// Register our settings tab.
 		( new SettingsTab() )->register();
 
-
 		if ( ! $this->is_order_source_data_enabled() ) {
 			return;
 		}
@@ -360,6 +359,7 @@ final class Plugin {
 	 * @return bool
 	 */
 	private function is_order_source_data_enabled(): bool {
-		return 'yes' === get_option( SettingsTab::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );;
+		return 'yes' === get_option( SettingsTab::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );
+
 	}
 }

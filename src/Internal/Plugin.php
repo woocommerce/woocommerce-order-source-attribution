@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\LoggerTrait;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
 use Automattic\WooCommerce\OrderSourceAttribution\Settings\SettingsTab;
@@ -54,6 +55,7 @@ final class Plugin {
 
 	/** @var LoggerInterface */
 	private $logger;
+	use LoggerTrait;
 
 	/**
 	 * Plugin constructor.
@@ -64,8 +66,8 @@ final class Plugin {
 
 		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
 		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
-		$this->logger       = $logger;
 
+		$this->set_logger( $logger );
 	}
 
 	/**

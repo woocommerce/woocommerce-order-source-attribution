@@ -16,9 +16,28 @@ class SettingsTab {
 	 * Bootstraps the class and hooks required actions & filters.
 	 */
 	public function register() {
-		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_tab' ), 50 );
-		add_action( 'woocommerce_settings_wc_order_source_attribution', array( $this, 'settings_tab' ) );
-		add_action( 'woocommerce_update_options_wc_order_source_attribution', array( $this, 'update_settings' ), 90 );
+		add_filter(
+			'woocommerce_settings_tabs_array',
+			function( $settings_tabs ) {
+				return $this->add_settings_tab( $settings_tabs );
+			},
+			50
+		);
+
+		add_action(
+			'woocommerce_settings_wc_order_source_attribution',
+			function() {
+				$this->settings_tab();
+			}
+		);
+
+		add_action(
+			'woocommerce_update_options_wc_order_source_attribution',
+			function() {
+				$this->update_settings();
+			},
+			90
+		);
 	}
 
 
@@ -28,7 +47,7 @@ class SettingsTab {
 	 * @param array $settings_tabs Array of WooCommerce setting tabs.
 	 * @return array $settings_tabs Array of WooCommerce setting tabs.
 	 */
-	public function add_settings_tab( $settings_tabs ) {
+	private function add_settings_tab( $settings_tabs ) {
 		$settings_tabs['wc_order_source_attribution'] = __( 'Order Attribution', 'woocommerce-order-source-attribution' );
 		return $settings_tabs;
 	}
@@ -37,7 +56,7 @@ class SettingsTab {
 	/**
 	 * Uses the WooCommerce admin fields API to output settings via the @see woocommerce_admin_fields() function.
 	 */
-	public function settings_tab() {
+	private function settings_tab() {
 		woocommerce_admin_fields( $this->get_settings() );
 	}
 
@@ -45,7 +64,7 @@ class SettingsTab {
 	/**
 	 * Uses the WooCommerce options API to save settings via the @see woocommerce_update_options() function.
 	 */
-	public function update_settings() {
+	private function update_settings() {
 		woocommerce_update_options( $this->get_settings() );
 	}
 
@@ -55,11 +74,11 @@ class SettingsTab {
 	 *
 	 * @return array Array of settings for @see woocommerce_admin_fields() function.
 	 */
-	public function get_settings() {
+	private function get_settings() {
 		$is_enabled = get_option( self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'no' );
 		$debug_mode = get_option( self::SETTINGS_DEBUG_MODE_ID, 'no' );
 
-		$settings = array(
+		return array(
 			'section_title' => array(
 				'name' => __( 'WooCommerce Order Source Attribution Settings', 'woocommerce-order-source-attribution' ),
 				'type' => 'title',
@@ -86,7 +105,5 @@ class SettingsTab {
 				'id'   => 'wc_order_source_attribution_section_end',
 			),
 		);
-
-		return $settings;
 	}
 }

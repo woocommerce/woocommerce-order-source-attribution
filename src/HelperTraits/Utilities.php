@@ -30,8 +30,7 @@ trait Utilities {
 	 * @return bool
 	 */
 	protected function is_debug_mode_enabled() {
-		$debug_mode = get_option( SettingsTab::SETTINGS_DEBUG_MODE_ID, 'no' );
-		return 'yes' === $debug_mode;
+		return 'yes' === get_option( SettingsTab::SETTINGS_DEBUG_MODE_ID, 'no' );
 	}
 
 }

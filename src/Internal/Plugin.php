@@ -7,6 +7,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
+use Automattic\WooCommerce\OrderSourceAttribution\Settings\SettingsTab;
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
@@ -73,6 +74,13 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register() {
+
+		// Register our settings tab.
+		( new SettingsTab() )->register();
+
+		if ( ! $this->is_order_source_data_enabled() ) {
+			return;
+		}
 
 		// Register WPConsentAPI
 		( new WPConsentAPI() )->register();
@@ -343,5 +351,15 @@ final class Plugin {
 			$this->logger->log_exception( $e, __METHOD__ );
 			return false;
 		}
+	}
+
+	/**
+	 * Check to see if order source data is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_order_source_data_enabled(): bool {
+		return 'yes' === get_option( SettingsTab::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );
+
 	}
 }

@@ -18,7 +18,6 @@
 
 use Automattic\WooCommerce\OrderSourceAttribution\Autoloader;
 use Automattic\WooCommerce\OrderSourceAttribution\Internal\PluginFactory;
-use Automattic\WooCommerce\OrderSourceAttribution\Settings\SettingsTab;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 defined( 'ABSPATH' ) || exit;

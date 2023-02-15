@@ -379,7 +379,7 @@ class AttributionFields {
 		printf(
 			/* translators: %s is the source type */
 			esc_html__( 'Source: %s', 'woocommerce-order-source-attribution' ),
-			$source
+			esc_html( $source )
 		);
 	}
 

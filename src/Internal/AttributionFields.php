@@ -12,6 +12,7 @@ use Exception;
 use WC_Customer;
 use WC_Meta_Data;
 use WC_Order;
+use WP_Post;
 use WP_User;
 
 defined( 'ABSPATH' ) || exit;
@@ -127,6 +128,35 @@ class AttributionFields {
 			function() {
 				$this->add_meta_box();
 			}
+		);
+
+		// Add source data to the order table.
+		add_filter(
+			'manage_edit-shop_order_columns',
+			function ( $columns ) {
+				$columns['origin'] = esc_html__( 'Origin', 'woocommerce-order-source-attribution' );
+
+				return $columns;
+			}
+		);
+
+		add_action(
+			'manage_shop_order_posts_custom_column',
+			function ( $column_name, $order_id ) {
+				if ( 'origin' !== $column_name ) {
+					return;
+				}
+
+				// Ensure we've got a valid order.
+				try {
+					$order = $this->get_hpos_order_object( $order_id );
+					$this->output_origin_column( $order );
+				} catch ( Exception $e ) {
+					return;
+				}
+			},
+			10,
+			2
 		);
 	}
 
@@ -292,12 +322,11 @@ class AttributionFields {
 			'woocommerce-order-source-data',
 			__( 'Order Source Data', 'woocommerce-order-source-attribution' ),
 			function ( $post ) {
-				global $theorder;
-
-				OrderUtil::init_theorder_object( $post );
-				$order = $theorder;
-
-				$this->display_order_source_data( $order );
+				try {
+					$this->display_order_source_data( $this->get_hpos_order_object( $post ) );
+				} catch ( Exception $e ) {
+					$this->get_logger()->log_exception( $e, __METHOD__ );
+				}
 			},
 			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
 			'normal'
@@ -335,5 +364,47 @@ class AttributionFields {
 			$this->get_logger()->log_exception( $e, __METHOD__ );
 			return false;
 		}
+	}
+
+	/**
+	 * Output the data for the Origin column in the orders table.
+	 *
+	 * @param WC_Order $order
+	 *
+	 * @return void
+	 */
+	private function output_origin_column( WC_Order $order ) {
+		$source = $order->get_meta( '_wc_order_source_attribution_source_type' ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
+
+		printf(
+			/* translators: %s is the source type */
+			esc_html__( 'Source: %s', 'woocommerce-order-source-attribution' ),
+			$source
+		);
+	}
+
+	/**
+	 * Get the order object with HPOS compatibility.
+	 *
+	 * @param WP_Post|int $post The post ID or object.
+	 *
+	 * @return WC_Order The order object
+	 * @throws Exception When the order isn't found.
+	 */
+	private function get_hpos_order_object( $post ) {
+		global $theorder;
+
+		if ( is_numeric( $post ) ) {
+			$post = get_post( $post );
+		}
+
+		OrderUtil::init_theorder_object( $post );
+
+		// Throw an exception if we don't have an order object.
+		if ( ! $theorder instanceof WC_Order ) {
+			throw new Exception( 'Order not found.' );
+		}
+
+		return $theorder;
 	}
 }

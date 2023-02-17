@@ -28,6 +28,7 @@
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
 		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="WordPress.PHP.DisallowShortTernary"/>
 
 		<!-- These comments are unnecessary -->
 		<exclude name="WooCommerce.Commenting.CommentHooks"/>

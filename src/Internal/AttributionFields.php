@@ -402,7 +402,7 @@ class AttributionFields {
 
 		// Throw an exception if we don't have an order object.
 		if ( ! $theorder instanceof WC_Order ) {
-			throw new Exception( 'Order not found.' );
+			throw new Exception( __( 'Order not found.', 'woocommerce-order-source-attribution' ) );
 		}
 
 		return $theorder;

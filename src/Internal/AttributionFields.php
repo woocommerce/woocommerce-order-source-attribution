@@ -175,7 +175,7 @@ class AttributionFields {
 		wp_enqueue_script(
 			'woocommerce-order-attribute-source-js',
 			plugins_url( 'assets/js/woocommerce-order-attribute-source.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
-			[ 'jquery' ],
+			[ 'jquery', 'sourcebuster-js' ],
 			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
 			true
 		);

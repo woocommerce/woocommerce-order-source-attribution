@@ -54,7 +54,7 @@ class WCCOMTracking {
 		wp_register_script(
 			'wccom-integration-js',
 			plugins_url( 'assets/js/wccom-integration.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
-			[ 'jquery', 'woocommerce-order-attribute-source-js' ],
+			[ 'woocommerce-order-attribute-source-js' ],
 			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
 			true
 		);

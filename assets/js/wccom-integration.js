@@ -1,8 +1,6 @@
-( function ( $ ) {
-	'use strict';
-
+window.addEventListener( 'load' , function ( e ) {
 	function activateOrderTrackingCookies() {
-		if (window.wccom && window.wccom.canTrackUser('analytics')) {
+		if ( window.wccom && window.wccom.canTrackUser('analytics') ) {
 			if ( ! wccom || ! wccom.canTrackUser( 'analytics' ) ) {
 				return;
 			}
@@ -11,5 +9,6 @@
 	}
 
 	activateOrderTrackingCookies();
+} );
 
-} )( jQuery );
+

@@ -38,6 +38,7 @@ class WCCOMTracking {
 
 	/**
 	 * Check if WCCom_Cookie_Terms is available.
+	 *
 	 * @return bool
 	 */
 	protected function is_wccom_cookie_terms_available() {

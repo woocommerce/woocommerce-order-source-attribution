@@ -22,7 +22,7 @@ class WCCOMTrackingTest extends WP_UnitTestCase {
 	}
 
 	public function test_wccom_tracking_not_allowed(): void {
-		$this->WCCOMTrackingIntegration->method( 'is_WCCom_Cookie_Terms_available' )
+		$this->WCCOMTrackingIntegration->method( 'is_wccom_cookie_terms_available' )
 			->willReturn( true );
 		$this->WCCOMTrackingIntegration->method( 'is_wccom_tracking_allowed' )
 			->willReturn( false );
@@ -37,7 +37,7 @@ class WCCOMTrackingTest extends WP_UnitTestCase {
 
 	public function test_wccom_tracking_allowed(): void {
 
-		$this->WCCOMTrackingIntegration->method( 'is_WCCom_Cookie_Terms_available' )
+		$this->WCCOMTrackingIntegration->method( 'is_wccom_cookie_terms_available' )
 			->willReturn( true );
 		$this->WCCOMTrackingIntegration->method( 'is_wccom_tracking_allowed' )
 			->willReturn( true );

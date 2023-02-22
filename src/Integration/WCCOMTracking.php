@@ -16,7 +16,7 @@ class WCCOMTracking {
 	 */
 	public function register() {
 
-		if ( ! $this->is_WCCom_Cookie_Terms_available() ) {
+		if ( ! $this->is_wccom_cookie_terms_available() ) {
 			return;
 		}
 
@@ -40,7 +40,7 @@ class WCCOMTracking {
 	 * Check if WCCom_Cookie_Terms is available.
 	 * @return bool
 	 */
-	protected function is_WCCom_Cookie_Terms_available() {
+	protected function is_wccom_cookie_terms_available() {
 		return class_exists( WCCom_Cookie_Terms::class );
 	}
 

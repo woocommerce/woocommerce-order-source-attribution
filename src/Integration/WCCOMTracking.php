@@ -15,8 +15,8 @@ class WCCOMTracking {
 	 * @return void
 	 */
 	public function register() {
-		// Include integration to WCCOM if available.
-		if ( ! class_exists( WCCom_Cookie_Terms::class ) ) {
+
+		if ( ! $this->is_WCCom_Cookie_Terms_available() ) {
 			return;
 		}
 
@@ -37,11 +37,19 @@ class WCCOMTracking {
 	}
 
 	/**
+	 * Check if WCCom_Cookie_Terms is available.
+	 * @return bool
+	 */
+	protected function is_WCCom_Cookie_Terms_available() {
+		return class_exists( WCCom_Cookie_Terms::class );
+	}
+
+	/**
 	 * Check if WCCOM tracking is allowed.
 	 *
 	 * @return bool
 	 */
-	private function is_wccom_tracking_allowed() {
+	protected function is_wccom_tracking_allowed() {
 		return WCCom_Cookie_Terms::instance()->can_track_user( 'analytics' );
 	}
 

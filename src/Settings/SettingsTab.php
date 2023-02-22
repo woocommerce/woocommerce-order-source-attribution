@@ -75,7 +75,7 @@ class SettingsTab {
 	 * @return array Array of settings for @see woocommerce_admin_fields() function.
 	 */
 	private function get_settings() {
-		$is_enabled = get_option( self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'no' );
+		$is_enabled = get_option( self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );
 		$debug_mode = get_option( self::SETTINGS_DEBUG_MODE_ID, 'no' );
 
 		return array(

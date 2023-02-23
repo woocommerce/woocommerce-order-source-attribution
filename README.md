@@ -20,7 +20,7 @@ Install dependencies:
 
 Now you can build the plugin using one of these commands:
 
--   `npm build`: Build a production version and package as a zip file.
+-   `npm build`: Build a production version and package it as a zip file.
 
 ### Branches
 

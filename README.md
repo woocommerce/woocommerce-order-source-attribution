@@ -3,7 +3,7 @@
 MVP/Prototype of order attribution/source functionality in WordPress.
 
 # What is WooCommerce Order Source Attribution?
-WooCommerce Order Source Attribution help merchants understand which marketing activities, channels or campaigns are leading to orders on their stores. 
+WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores. 
 
 
 ### Requirements

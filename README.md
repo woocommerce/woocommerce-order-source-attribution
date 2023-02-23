@@ -28,7 +28,7 @@ Now you can build the plugin using one of these commands:
 
 ### Development tools
 
-There are a number of development tools available as npm scripts. Check the [`package.json`](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/package.json) file for more.
+There are several development tools available as npm scripts. Check the [`package.json`](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/package.json) file for more.
 
 -   `npm run lint:php`: Run [`phpcs`](https://github.com/squizlabs/PHP_CodeSniffer) to validate PHP code style.
 

@@ -24,7 +24,7 @@ Now you can build the plugin using one of these commands:
 
 ### Branches
 
--   `main` branch is the most up to date code.
+-   `main` branch is the most up-to-date code.
 
 ### Development tools
 

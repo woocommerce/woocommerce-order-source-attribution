@@ -8,7 +8,7 @@ WooCommerce Order Source Attribution helps merchants understand which marketing 
 
 ### Requirements
 
-WooCommerce Order Source Attribution requires recent versions of PHP (7.4 or newer), and WordPress and WooCommerce (we recommend the latest, and support the last two versions, a.k.a. L-2).
+WooCommerce Order Source Attribution requires recent versions of PHP (7.4 or newer), WordPress, and WooCommerce (we recommend the latest, and support the last two versions, a.k.a. L-2).
 
 
 ## Development

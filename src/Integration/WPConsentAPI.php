@@ -59,7 +59,7 @@ class WPConsentAPI {
 	 * @return bool
 	 * @since x.x.x
 	 */
-	private function is_wp_consent_api_active() {
+	protected function is_wp_consent_api_active() {
 		return class_exists( WP_CONSENT_API::class );
 	}
 

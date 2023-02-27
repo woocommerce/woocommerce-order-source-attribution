@@ -20,7 +20,7 @@ class AttributionFieldsTest extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 		self::$dummy_logger = new class() implements LoggerInterface {
 			public function log_exception( Exception $exception, string $method ): void {}
@@ -37,12 +37,11 @@ class AttributionFieldsTest extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->attribution_fields_class = $this->getMockBuilder( AttributionFields::class )
 			->setConstructorArgs( [ self::$dummy_logger ] )
 			->getMock();
-
 
 	}
 }

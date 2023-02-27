@@ -24,5 +24,8 @@
         "exussum12/coverage-checker": "^1.0",
         "phpunit/phpunit": "^9.5",
         "yoast/phpunit-polyfills": "^1.0"
+    },
+    "scripts": {
+      "test-unit": "./vendor/bin/phpunit"
     }
 }

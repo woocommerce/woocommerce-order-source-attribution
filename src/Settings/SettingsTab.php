@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\OrderSourceAttribution\Settings;
 
+use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\Utilities;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -9,6 +11,9 @@ defined( 'ABSPATH' ) || exit;
  * @since x.x.x
  */
 class SettingsTab {
+
+	use Utilities;
+
 	const SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID = 'wc_order_source_attribution_enable_order_source_data';
 	const SETTINGS_DEBUG_MODE_ID               = 'wc_order_source_attribution_debug_mode';
 
@@ -38,6 +43,26 @@ class SettingsTab {
 			},
 			90
 		);
+
+		add_filter(
+			'plugin_action_links_' . $this->get_plugin_base_name(),
+			function ( $links ) {
+				$settings_url = add_query_arg(
+					[
+						'page' => 'wc-settings',
+						'tab'  => 'wc_order_source_attribution',
+					],
+					admin_url( 'admin.php' )
+				);
+				$action_links = [
+					'settings' => '<a href="' . $settings_url . '">' . esc_html__( 'Settings', 'woocommerce-order-source-attribution' ) . '</a>',
+				];
+
+				return array_merge( $action_links, $links );
+
+			}
+		);
+
 	}
 
 

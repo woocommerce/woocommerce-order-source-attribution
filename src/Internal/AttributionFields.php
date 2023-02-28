@@ -397,6 +397,10 @@ class AttributionFields {
 		if ( is_numeric( $post ) ) {
 			$post = get_post( $post );
 		}
+		
+		if ( empty( $theorder ) || $theorder->get_id() !== $post->ID ) {
+			$theorder = wc_get_order( $post->ID );
+		}
 
 		OrderUtil::init_theorder_object( $post );
 

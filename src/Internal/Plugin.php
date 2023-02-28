@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 
 use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\LoggerTrait;
+use Automattic\WooCommerce\OrderSourceAttribution\Integration\WCCOMTracking;
 use Automattic\WooCommerce\OrderSourceAttribution\Integration\WPConsentAPI;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
 use Automattic\WooCommerce\OrderSourceAttribution\Settings\SettingsTab;
@@ -44,6 +45,10 @@ final class Plugin {
 
 		// Register WPConsentAPI
 		( new WPConsentAPI() )->register();
+
+		// Register WCCOM tracking.
+		( new WCCOMTracking() )->register();
+
 		( new AttributionFields( $this->get_logger() ) )->register();
 	}
 

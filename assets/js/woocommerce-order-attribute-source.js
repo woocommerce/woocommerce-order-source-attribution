@@ -12,6 +12,7 @@
 	woocommerce_order_source_attribution.initOrderTracking = function() {
 
 		if ( params.allowTracking === 'no' ) {
+			woocommerce_order_source_attribution.removeTrackingCookies();
 			return;
 		}
 
@@ -68,8 +69,30 @@
 		if ( ! allow ) {
 			return;
 		}
+
 		params.allowTracking = 'yes';
 		woocommerce_order_source_attribution.initOrderTracking();
+
+	}
+
+	woocommerce_order_source_attribution.removeTrackingCookies = function() {
+
+		var domain = window.location.hostname;
+		var sbCookies = [
+			'sbjs_current',
+			'sbjs_current_add',
+			'sbjs_first',
+			'sbjs_first_add',
+			'sbjs_session',
+			'sbjs_udata',
+			'sbjs_migrations',
+			'sbjs_promo'
+		];
+
+		// Remove cookies
+		sbCookies.forEach( function( name ) {
+			document.cookie = name + '=; path=/; max-age=-999; domain=.' + domain + ';';
+		} );
 
 	}
 

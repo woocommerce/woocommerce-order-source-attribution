@@ -402,8 +402,6 @@ class AttributionFields {
 			$theorder = wc_get_order( $post->ID );
 		}
 
-		OrderUtil::init_theorder_object( $post );
-
 		// Throw an exception if we don't have an order object.
 		if ( ! $theorder instanceof WC_Order ) {
 			throw new Exception( __( 'Order not found.', 'woocommerce-order-source-attribution' ) );

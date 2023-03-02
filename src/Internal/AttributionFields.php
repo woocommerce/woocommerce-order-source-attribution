@@ -398,7 +398,9 @@ class AttributionFields {
 			$post = get_post( $post );
 		}
 
-		OrderUtil::init_theorder_object( $post );
+		if ( empty( $theorder ) || $theorder->get_id() !== $post->ID ) {
+			$theorder = wc_get_order( $post->ID );
+		}
 
 		// Throw an exception if we don't have an order object.
 		if ( ! $theorder instanceof WC_Order ) {

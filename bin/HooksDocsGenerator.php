@@ -41,6 +41,7 @@ class HooksDocsGenerator {
 	 */
 	protected static function get_files( $pattern, $flags = 0, $path = '' ) {
 		$dir = dirname( $pattern );
+		// phpcs:ignore WordPress.PHP.YodaConditions.NotYoda
 		if ( ! $path && $dir !== '.' ) {
 			if ( '\\' === $dir || '/' === $dir ) {
 					$dir = '';

@@ -1,7 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-namespace Automattic\WooCommerce\OrderSourceAttribution\Util;
+namespace Automattic\WooCommerce\OrderSourceAttribution\Bin;
 
 /**
  * Generate documentation for hooks in WooCommerce Order Source Attribution.
@@ -24,7 +24,7 @@ class HooksDocsGenerator {
 	/**
 	 * GITHUB_PATH
 	 */
-	protected const GITHUB_PATH = 'https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main';
+	protected const GITHUB_PATH = 'https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/';
 
 	/**
 	 * Hooks docs markdown output.
@@ -50,17 +50,16 @@ class HooksDocsGenerator {
 			return self::get_files( basename( $pattern ), $flags, $dir . '/' );
 		}
 
-		$paths = glob( $path . '*', GLOB_ONLYDIR | GLOB_NOSORT );
-		$files = glob( $path . $pattern, $flags );
+		$paths = (array) glob( $path . '*', GLOB_ONLYDIR | GLOB_NOSORT );
+		$files = (array) glob( $path . $pattern, $flags );
 
-		if ( is_array( $paths ) ) {
-			foreach ( $paths as $p ) {
-				$retrieved_files = (array) self::get_files( $pattern, $flags, $p . '/' );
-				if ( is_array( $files ) && is_array( $retrieved_files ) ) {
-					$files = array_merge( $files, $retrieved_files );
-				}
+		foreach ( $paths as $p ) {
+			$retrieved_files = (array) self::get_files( $pattern, $flags, $p . '/' );
+			if ( is_array( $files ) && is_array( $retrieved_files ) ) {
+				$files = array_merge( $files, $retrieved_files );
 			}
 		}
+
 		return $files;
 	}
 
@@ -214,7 +213,12 @@ class HooksDocsGenerator {
 	 * @return string
 	 */
 	protected static function get_file_link( array $file ): string {
-		return '<a href="' . self::GITHUB_PATH . self::get_file_url( $file ) . '">' . basename( $file['path'] ) . "#L{$file['line']}" . '</a>';
+
+		return sprintf(
+			'<a href="%s">%s</a>',
+			self::GITHUB_PATH . self::get_file_url( $file ),
+			basename( $file['path'] ) . "#L{$file['line']}"
+		);
 	}
 
 	/**
@@ -224,20 +228,20 @@ class HooksDocsGenerator {
 	 * @param array $files_to_scan List of files to scan.
 	 */
 	protected static function get_delimited_list_output( array $hook_list, array $files_to_scan ): string {
+
 		$output  = "# Hooks Reference\n\n";
 		$output .= "A list of hooks, i.e `actions` and `filters`, that are defined or used in this project.\n\n";
 
 		foreach ( $hook_list as $hooks ) {
 			foreach ( $hooks as $hook => $details ) {
-				$output   .= "## {$hook}\n\n";
-				$output   .= "**Type**: {$details['type']}\n\n";
-				$output   .= "**Used in**:\n\n";
 				$link_list = [];
 				foreach ( $details['files'] as $file ) {
 					$link_list[] = '- ' . self::get_file_link( $file );
 				}
-				$output .= implode( "\n", $link_list );
-				$output .= "\n\n";
+
+				$links = implode( "\n", $link_list );
+				$output .= sprintf(
+					"## %s\n\n**Type**: %s\n\n**Used in**:\n\n%s\n\n", $hook, $details['type'], $links );
 			}
 		}
 

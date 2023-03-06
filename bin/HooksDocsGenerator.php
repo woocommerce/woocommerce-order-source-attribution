@@ -239,9 +239,13 @@ class HooksDocsGenerator {
 					$link_list[] = '- ' . self::get_file_link( $file );
 				}
 
-				$links = implode( "\n", $link_list );
+				$links   = implode( "\n", $link_list );
 				$output .= sprintf(
-					"## %s\n\n**Type**: %s\n\n**Used in**:\n\n%s\n\n", $hook, $details['type'], $links );
+					"## %s\n\n**Type**: %s\n\n**Used in**:\n\n%s\n\n",
+					$hook,
+					$details['type'],
+					$links
+				);
 			}
 		}
 

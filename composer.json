@@ -8,7 +8,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Automattic\\WooCommerce\\OrderSourceAttribution\\": "src/"
+            "Automattic\\WooCommerce\\OrderSourceAttribution\\": "src/",
+            "Automattic\\WooCommerce\\OrderSourceAttribution\\Bin\\" : "bin/"
         }
     },
     "config": {

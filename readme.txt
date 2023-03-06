@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
-MVP/Prototype of order attribution/source functionality in WordPress.
+WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores.
 
 == Changelog ==
 = 0.1.0 =

@@ -121,8 +121,8 @@ class HooksDocsGenerator {
 								case 'filter':
 								case 'action':
 									$hook = trim( $token[1], "'" );
-									$hook = str_replace( '_FUNCTION_', strtoupper( $current_function ), $hook );
-									$hook = str_replace( '_CLASS_', strtoupper( $current_class ), $hook );
+									$hook = str_replace( '__FUNCTION__', strtoupper( $current_function ), $hook );
+									$hook = str_replace( '__CLASS__', strtoupper( $current_class ), $hook );
 									$hook = str_replace( '$this', strtoupper( $current_class ), $hook );
 									$hook = str_replace( [ '.', '{', '}', '"', "'", ' ', ')', '(' ], '', $hook );
 									$hook = preg_replace( '#//phpcs:(.*)(\n)#', '', $hook );

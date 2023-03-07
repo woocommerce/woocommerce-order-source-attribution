@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Grow Order Attribute Prototype
- * Plugin URI: https://woomultichannel.wordpress.com/2022/11/07/project-thread-order-attribution-source-prototype/
- * Description: Prototyping Order Attribution tracking.
+ * Plugin Name: WooCommerce Order Source Attribution
+ * Plugin URI: https://github.com/woocommerce/woocommerce-order-source-attribution#readme
+ * Description: WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores.
  * Version: 0.1.0
- * Author: Grow
- * Author URI: https://woogrowp2.wordpress.com/
+ * Author: WooCommerce
+ * Author URI: https://woocommerce.com/
  * Text Domain: woocommerce-order-source-attribution
  * Requires at least: 5.9
  * Tested up to: 6.1

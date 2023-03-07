@@ -1,8 +1,8 @@
 {
   "name": "woocommerce-order-source-attribution",
   "version": "0.1.0",
-  "description": "MVP/Prototype of order attribution/source functionality in WordPress.",
-  "author": "Grow",
+  "description": "WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores.",
+  "author": "WooCommerce",
   "homepage": "https://github.com/woocommerce/woocommerce-order-source-attribution#readme",
   "repository": {
     "type": "git",

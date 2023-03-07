@@ -54,10 +54,7 @@ class HooksDocsGenerator {
 		$files = (array) glob( $path . $pattern, $flags );
 
 		foreach ( $paths as $p ) {
-			$retrieved_files = (array) self::get_files( $pattern, $flags, $p . '/' );
-			if ( is_array( $files ) && is_array( $retrieved_files ) ) {
-				$files = array_merge( $files, $retrieved_files );
-			}
+			$files = array_merge( $files, self::get_files( $pattern, $flags, $p . '/' ) );
 		}
 
 		return $files;

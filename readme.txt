@@ -45,5 +45,3 @@ WooCommerce Order Source Attribution helps merchants understand which marketing 
 * Tweak - Update gitignore and add gitattributes to exclude generated files.
 * Tweak - Update plugin name and description.
 * Tweak - exclude phpunit.xml from the build bundle.
-
-= x.x.x - 2023-xx-xx =

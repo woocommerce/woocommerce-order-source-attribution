@@ -14,4 +14,5 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores.
 
 == Changelog ==
-= 0.1.0 - 2023-xx-xx =
+
+= x.x.x - 2023-xx-xx =

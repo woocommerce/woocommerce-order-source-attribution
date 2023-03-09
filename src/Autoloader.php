@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Autoloader class.
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 class Autoloader {
 

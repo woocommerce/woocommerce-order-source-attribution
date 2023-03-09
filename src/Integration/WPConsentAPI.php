@@ -10,7 +10,7 @@ use WP_CONSENT_API;
 /**
  * Class WPConsentAPI
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 class WPConsentAPI {
 
@@ -20,7 +20,7 @@ class WPConsentAPI {
 	 * Register the consent API.
 	 *
 	 * @return void
-	 * @since x.x.x
+	 * @since 0.1.0
 	 */
 	public function register() {
 		// Include integration to WP Consent Level API if available
@@ -57,7 +57,7 @@ class WPConsentAPI {
 	 * Check if WP Cookie Consent API is active
 	 *
 	 * @return bool
-	 * @since x.x.x
+	 * @since 0.1.0
 	 */
 	protected function is_wp_consent_api_active() {
 		return class_exists( WP_CONSENT_API::class );
@@ -67,7 +67,7 @@ class WPConsentAPI {
 	 * Enqueue JS for integration with WP Consent Level API
 	 *
 	 * @return void
-	 * @since   x.x.x
+	 * @since   0.1.0
 	 */
 	private function enqueue_consent_api_scripts() {
 		wp_register_script(

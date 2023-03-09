@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class Plugin
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 final class Plugin {
 

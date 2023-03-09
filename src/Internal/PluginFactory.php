@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * This is responsible for instantiating a Plugin object and returning the same object.
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 final class PluginFactory {
 

@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class SettingsTab
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 class SettingsTab {
 

@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Trait Utilities.
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 trait Utilities {
 
@@ -18,7 +18,7 @@ trait Utilities {
 	 * Get plugin base name.
 	 *
 	 * @return string
-	 * @since x.x.x
+	 * @since 0.1.0
 	 */
 	protected function get_plugin_base_name() {
 		return plugin_basename( WC_ORDER_ATTRIBUTE_SOURCE_FILE );

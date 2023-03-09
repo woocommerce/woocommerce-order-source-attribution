@@ -1,21 +1,5 @@
-=== WooCommerce Order Source Attribution ===
-Contributors: automattic
-Tags: woocommerce
-Requires at least: 4.4.0
-Requires PHP: 7.2
-Tested up to: 6.1.0
-Stable tag: trunk
-License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
-
-
-== Description ==
-
-WooCommerce Order Source Attribution helps merchants understand which marketing activities, channels or campaigns are leading to orders in their stores.
-
-== Changelog ==
-
-= 0.1.0 - 2023-03-09 =
+*** WooCommerce Order Source Atrribution Changelog ***
+2023-03-09 - version 0.1.0
 * Add - Logging class.
 * Add - Set up settings link to plugin actions.
 * Add - Settings page.
@@ -45,3 +29,4 @@ WooCommerce Order Source Attribution helps merchants understand which marketing 
 * Tweak - Update gitignore and add gitattributes to exclude generated files.
 * Tweak - Update plugin name and description.
 * Tweak - exclude phpunit.xml from the build bundle.
+

@@ -9,7 +9,7 @@ use WC_Logger_Interface;
 /**
  * Class DebugLogger
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 class DebugLogger implements LoggerInterface {
 

@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class AttributionFields
  *
- * @since x.x.x
+ * @since 0.1.0
  */
 class AttributionFields {
 

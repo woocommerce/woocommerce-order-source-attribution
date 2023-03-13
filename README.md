@@ -84,3 +84,8 @@ $ vendor/bin/phpunit
 The tests will execute and you'll be presented with a summary.
 
 
+<p align="center">
+	<br/><br/>
+	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
+	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
+</p>

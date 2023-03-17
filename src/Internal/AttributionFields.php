@@ -288,6 +288,7 @@ class AttributionFields {
 
 		// If we don't have any meta to show, return.
 		if ( empty( $meta ) ) {
+			esc_html_e( 'No order source data available.', 'woocommerce-order-source-attribution' );
 			return;
 		}
 

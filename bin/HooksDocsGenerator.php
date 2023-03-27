@@ -24,7 +24,7 @@ class HooksDocsGenerator {
 	/**
 	 * GITHUB_PATH
 	 */
-	protected const GITHUB_PATH = 'https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/';
+	protected const GITHUB_PATH = 'https://github.com/woocommerce/woocommerce-order-source-attribution/blob/develop/';
 
 	/**
 	 * Hooks docs markdown output.

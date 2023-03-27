@@ -3,7 +3,8 @@ name: PHP Unit Tests
 on:
   push:
     branches:
-      - main
+      - develop
+      - trunk
     paths:
       - "**.php"
       - composer.json

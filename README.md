@@ -24,11 +24,11 @@ Now you can build the plugin using one of these commands:
 
 ### Branches
 
--   `main` branch is the most up-to-date code.
+-   `develop` branch is the most up-to-date code.
 
 ### Development tools
 
-There are several development tools available as npm scripts. Check the [`package.json`](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/package.json) file for more.
+There are several development tools available as npm scripts. Check the [`package.json`](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/develop/package.json) file for more.
 
 -   `npm run lint:php`: Run [`phpcs`](https://github.com/squizlabs/PHP_CodeSniffer) to validate PHP code style.
 

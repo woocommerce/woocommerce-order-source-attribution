@@ -16,6 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate hook documentation
-        uses: woocommerce/grow/packages/php/github-actions/hook-documentation/action.yml@feature/hook_helper
+        uses: woocommerce/grow/packages/php/github-actions/hook-documentation@feature/hook_helper
         with:
           debug-output: yes

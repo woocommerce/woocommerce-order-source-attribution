@@ -1,0 +1,21 @@
+name: PHP Hook Documentation Generator
+
+on:
+  pull_request:
+    paths:
+      - "**.php"
+      - .github/workflows/php-hook-documentation.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  HookDocumentation:
+    name: Hook Documentation Generator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate hook documentation
+        uses: woocommerce/grow/packages/php/github-actions/hook-documentation/action.yml@feature/hook_helper
+        with:
+          debug-output: yes

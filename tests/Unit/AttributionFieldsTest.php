@@ -44,4 +44,61 @@ class AttributionFieldsTest extends WP_UnitTestCase {
 			->getMock();
 
 	}
+
+	/**
+	 * Tests the output_origin_column method.
+	 *
+	 * @return void
+	 */
+	public function test_output_origin_column() {
+
+		$attribution_field_class = new AttributionFields( self::$dummy_logger );
+
+		// Define the expected output for each test case.
+		$test_cases = array(
+			array(
+				'source_type'     => 'utm',
+				'source'          => 'example',
+				'expected_output' => 'Source: Example',
+			),
+			array(
+				'source_type'     => 'organic',
+				'source'          => 'example',
+				'expected_output' => 'Organic: Example',
+			),
+			array(
+				'source_type'     => 'referral',
+				'source'          => 'example',
+				'expected_output' => 'Referral: Example',
+			),
+			array(
+				'source_type'     => 'typein',
+				'source'          => '(direct)',
+				'expected_output' => 'Direct',
+			),
+			array(
+				'source_type'     => '',
+				'source'          => '',
+				'expected_output' => 'None',
+			),
+		);
+
+		foreach ( $test_cases as $test_case ) {
+			// Create a mock WC_Order object.
+			$order = $this->getMockBuilder( \WC_Order::class )
+				->onlyMethods( array( 'get_meta' ) )
+				->getMock();
+			$order->method( 'get_meta' )
+				->willReturnOnConsecutiveCalls( $test_case['source_type'], $test_case['source'] );
+
+			// Capture the output.
+			ob_start();
+
+			$attribution_field_class->output_origin_column( $order );
+
+			$output = ob_get_clean();
+
+			$this->assertEquals( $test_case['expected_output'], $output );
+		}
+	}
 }

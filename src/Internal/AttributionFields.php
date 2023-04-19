@@ -382,12 +382,15 @@ class AttributionFields {
 
 		switch ( $source_type ) {
 			case 'utm':
+				/* translators: %s is the source value */
 				$label = esc_html__( 'Source: %s', 'woocommerce-order-source-attribution' );
 				break;
 			case 'organic':
+				/* translators: %s is the source value */
 				$label = esc_html__( 'Organic: %s', 'woocommerce-order-source-attribution' );
 				break;
 			case 'referral':
+				/* translators: %s is the source value */
 				$label = esc_html__( 'Referral: %s', 'woocommerce-order-source-attribution' );
 				break;
 		}

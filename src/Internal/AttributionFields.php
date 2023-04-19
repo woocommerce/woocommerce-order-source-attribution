@@ -396,7 +396,7 @@ class AttributionFields {
 		}
 
 		if ( empty( $label ) ) {
-			echo  esc_html( $formatted_source );
+			echo esc_html( $formatted_source );
 			return;
 		}
 

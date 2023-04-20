@@ -22,3 +22,5 @@ jobs:
         uses: woocommerce/grow/packages/php/github-actions/hook-documentation@feature/hook_helper
         with:
           debug-output: yes
+          source-directories: src/,templates/
+          main-branch: develop

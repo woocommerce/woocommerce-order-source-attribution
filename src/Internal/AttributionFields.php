@@ -374,14 +374,46 @@ class AttributionFields {
 	 *
 	 * @return void
 	 */
-	private function output_origin_column( WC_Order $order ) {
-		$source = $order->get_meta( '_wc_order_source_attribution_source_type' ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
+	public function output_origin_column( WC_Order $order ) {
+		$source_type      = $order->get_meta( '_wc_order_source_attribution_source_type' );
+		$source           = $order->get_meta( '_wc_order_source_attribution_utm_source' ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
+		$formatted_source = ucfirst( trim( $source, '()' ) );
+		$label            = $this->get_source_label( $source_type );
 
-		printf(
-			/* translators: %s is the source type */
-			esc_html__( 'Source: %s', 'woocommerce-order-source-attribution' ),
-			esc_html( $source )
-		);
+		if ( empty( $label ) ) {
+			echo esc_html( $formatted_source );
+			return;
+		}
+
+		printf( $label, esc_html( $formatted_source ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+	}
+
+	/**
+	 * Returns the label based on the source type.
+	 *
+	 * @param string $source_type The source type.
+	 * @return string The label for the source type.
+	 */
+	private function get_source_label( string $source_type ) {
+		$label = '';
+
+		switch ( $source_type ) {
+			case 'utm':
+				/* translators: %s is the source value */
+				$label = esc_html__( 'Source: %s', 'woocommerce-order-source-attribution' );
+				break;
+			case 'organic':
+				/* translators: %s is the source value */
+				$label = esc_html__( 'Organic: %s', 'woocommerce-order-source-attribution' );
+				break;
+			case 'referral':
+				/* translators: %s is the source value */
+				$label = esc_html__( 'Referral: %s', 'woocommerce-order-source-attribution' );
+				break;
+		}
+
+		return $label;
 	}
 
 	/**

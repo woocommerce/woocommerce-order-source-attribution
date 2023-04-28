@@ -17,8 +17,11 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
       - name: Generate hook documentation
+        id: generate-hook-docs
         uses: woocommerce/grow/packages/php/github-actions/hook-documentation@feature/hook_helper
         with:
           debug-output: yes
@@ -28,9 +31,10 @@ jobs:
       - name: Commit hook documentation
         shell: bash
         run: |
+          git branch --show-current
           git config user.name github-actions
           git config user.email github-actions@users.noreply.github.com
-          echo "${{ steps.run-documentation-generator.outputs.hook-docs }}" > docs/Hooks.md
+          echo "${{ steps.generate-hook-docs.outputs.hook-docs }}" > docs/Hooks.md
           git add docs/Hooks.md
           if git diff --cached --quiet; then
             echo "*No documentation changes to commit.*" >> $GITHUB_STEP_SUMMARY

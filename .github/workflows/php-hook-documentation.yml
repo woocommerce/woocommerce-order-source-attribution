@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate hook documentation
         id: generate-hook-docs
-        uses: woocommerce/grow/packages/php/github-actions/hook-documentation@feature/hook_helper
+        uses: woocommerce/grow/hook-documentation@actions-v1.5.1-pre
         with:
           debug-output: yes
           source-directories: src/,templates/

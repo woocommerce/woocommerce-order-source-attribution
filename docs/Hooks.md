@@ -1,6 +1,6 @@
 # Hooks Reference
 
-A list of hooks, i.e `actions` and `filters`, that are defined or used in this project.
+A list of hooks, e.g. `actions` and `filters`, that are defined or used in this project.
 
 ## wc_order_source_attribution_allow_tracking
 
@@ -8,7 +8,7 @@ A list of hooks, i.e `actions` and `filters`, that are defined or used in this p
 
 **Used in**:
 
-- [AttributionFields.php#L191](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/c662330881dc20bd615a7983f4932eadb4983304/src/Internal/AttributionFields.php#L191)
+- [AttributionFields.php#L191](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/e1745ca6e7edb7fba5730451b0022a2028f39a5b/src/Internal/AttributionFields.php#L191)
 
 ## wc_order_source_attribution_cookie_lifetime_months
 
@@ -16,7 +16,7 @@ A list of hooks, i.e `actions` and `filters`, that are defined or used in this p
 
 **Used in**:
 
-- [AttributionFields.php#L187](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/c662330881dc20bd615a7983f4932eadb4983304/src/Internal/AttributionFields.php#L187)
+- [AttributionFields.php#L187](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/e1745ca6e7edb7fba5730451b0022a2028f39a5b/src/Internal/AttributionFields.php#L187)
 
 ## wc_order_source_attribution_session_length_minutes
 
@@ -24,7 +24,7 @@ A list of hooks, i.e `actions` and `filters`, that are defined or used in this p
 
 **Used in**:
 
-- [AttributionFields.php#L188](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/c662330881dc20bd615a7983f4932eadb4983304/src/Internal/AttributionFields.php#L188)
+- [AttributionFields.php#L188](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/e1745ca6e7edb7fba5730451b0022a2028f39a5b/src/Internal/AttributionFields.php#L188)
 
 ## wc_order_source_attribution_tracking_field_prefix
 
@@ -32,7 +32,7 @@ A list of hooks, i.e `actions` and `filters`, that are defined or used in this p
 
 **Used in**:
 
-- [AttributionFields.php#L64](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/c662330881dc20bd615a7983f4932eadb4983304/src/Internal/AttributionFields.php#L64)
+- [AttributionFields.php#L64](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/e1745ca6e7edb7fba5730451b0022a2028f39a5b/src/Internal/AttributionFields.php#L64)
 
 ## wc_order_source_attribution_tracking_fields
 
@@ -40,5 +40,5 @@ A list of hooks, i.e `actions` and `filters`, that are defined or used in this p
 
 **Used in**:
 
-- [AttributionFields.php#L63](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/c662330881dc20bd615a7983f4932eadb4983304/src/Internal/AttributionFields.php#L63)
+- [AttributionFields.php#L63](https://github.com/woocommerce/woocommerce-order-source-attribution/blob/e1745ca6e7edb7fba5730451b0022a2028f39a5b/src/Internal/AttributionFields.php#L63)
 

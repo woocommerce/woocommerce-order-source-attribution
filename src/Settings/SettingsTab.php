@@ -22,30 +22,7 @@ class SettingsTab {
 	 */
 	public function register() {
 		add_filter(
-			'woocommerce_settings_tabs_array',
-			function( $settings_tabs ) {
-				return $this->add_settings_tab( $settings_tabs );
-			},
-			50
-		);
-
-		add_action(
-			'woocommerce_settings_wc_order_source_attribution',
-			function() {
-				$this->settings_tab();
-			}
-		);
-
-		add_action(
-			'woocommerce_update_options_wc_order_source_attribution',
-			function() {
-				$this->update_settings();
-			},
-			90
-		);
-
-		add_filter(
-			'plugin_action_links_' . $this->get_plugin_base_name(),
+			"plugin_action_links_{$this->get_plugin_base_name()}",
 			function ( $links ) {
 				$settings_url = add_query_arg(
 					[
@@ -59,76 +36,70 @@ class SettingsTab {
 				];
 
 				return array_merge( $action_links, $links );
-
 			}
 		);
 
+		add_filter(
+			'woocommerce_get_settings_advanced',
+			function( $settings, $current_section ) {
+				if ( 'features' !== $current_section ) {
+					return $settings;
+				}
+
+				return $this->add_experimental_settings( $settings );
+			},
+			100,
+			2
+		);
 	}
 
-
 	/**
-	 * Add a new settings tab to the WooCommerce settings tabs array.
+	 * Add our setting to the Experimental Features section.
 	 *
-	 * @param array $settings_tabs Array of WooCommerce setting tabs.
-	 * @return array $settings_tabs Array of WooCommerce setting tabs.
-	 */
-	private function add_settings_tab( $settings_tabs ) {
-		$settings_tabs['wc_order_source_attribution'] = __( 'Order Attribution', 'woocommerce-order-source-attribution' );
-		return $settings_tabs;
-	}
-
-
-	/**
-	 * Uses the WooCommerce admin fields API to output settings via the @see woocommerce_admin_fields() function.
-	 */
-	private function settings_tab() {
-		woocommerce_admin_fields( $this->get_settings() );
-	}
-
-
-	/**
-	 * Uses the WooCommerce options API to save settings via the @see woocommerce_update_options() function.
-	 */
-	private function update_settings() {
-		woocommerce_update_options( $this->get_settings() );
-	}
-
-
-	/**
-	 * Get all the settings for this plugin for @see woocommerce_admin_fields() function.
+	 * @param array $settings
 	 *
-	 * @return array Array of settings for @see woocommerce_admin_fields() function.
+	 * @return array
 	 */
-	private function get_settings() {
-		$is_enabled = get_option( self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID, 'yes' );
-		$debug_mode = get_option( self::SETTINGS_DEBUG_MODE_ID, 'no' );
+	private function add_experimental_settings( array $settings ) {
+		$numeric_only_settings = array_filter(
+			$settings,
+			function( $key ) {
+				return is_int( $key );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 
-		return array(
-			'section_title' => array(
-				'name' => __( 'WooCommerce Order Source Attribution Settings', 'woocommerce-order-source-attribution' ),
-				'type' => 'title',
-				'desc' => '',
-				'id'   => 'wc_order_source_attribution_section_title',
-			),
-			'enabled'       => array(
+		// Add our own settings in the featured section.
+		$ids = array_column( $numeric_only_settings, 'id' );
+		$feature_begin_index = array_search( 'experimental_features_options', $ids, true );
+		if ( false === $feature_begin_index ) {
+			return $settings;
+		}
+
+		$order_attribution_settings = [
+			[
 				'title'   => __( 'Order Attribution', 'woocommerce-order-source-attribution' ),
 				'type'    => 'checkbox',
 				'default' => 'yes',
 				'desc'    => __( 'Enable WooCommerce Order Source Attribution.', 'woocommerce-order-source-attribution' ),
 				'id'      => self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID,
-				'value'   => $is_enabled,
-			),
-			'debug_mode'    => array(
-				'title' => __( 'Debug Mode', 'woocommerce-order-source-attribution' ),
-				'type'  => 'checkbox',
-				'desc'  => __( 'Log plugin events.', 'woocommerce-order-source-attribution' ),
-				'id'    => self::SETTINGS_DEBUG_MODE_ID,
-				'value' => $debug_mode,
-			),
-			'section_end'   => array(
-				'type' => 'sectionend',
-				'id'   => 'wc_order_source_attribution_section_end',
-			),
+			],
+			'debug_mode' => [
+				'title'   => __( 'Order Attribution Debug Mode', 'woocommerce-order-source-attribution' ),
+				'type'    => 'checkbox',
+				'default' => 'no',
+				'desc'    => __( 'Log plugin events.', 'woocommerce-order-source-attribution' ),
+				'id'      => self::SETTINGS_DEBUG_MODE_ID,
+			],
+		];
+
+		$first_section = array_slice( $numeric_only_settings, 0, $feature_begin_index + 1 );
+		$second_section = array_slice( $numeric_only_settings, $feature_begin_index + 1 );
+
+		return array_merge(
+			$first_section,
+			$order_attribution_settings,
+			$second_section
 		);
 	}
 }

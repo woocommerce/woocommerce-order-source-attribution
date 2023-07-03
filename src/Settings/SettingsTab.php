@@ -54,13 +54,18 @@ class SettingsTab {
 	}
 
 	/**
-	 * Add our setting to the Experimental Features section.
+	 * Add our setting to the end of the Experimental Features section.
 	 *
 	 * @param array $settings
 	 *
 	 * @return array
 	 */
 	private function add_experimental_settings( array $settings ) {
+		/*
+		 * The array of settings has numerically-indexed items as the settings, and key-indexed
+		 * items that were used to generate the settings. This strips out the key-indexed
+		 * items for our logic.
+		 */
 		$numeric_only_settings = array_filter(
 			$settings,
 			function( $key ) {
@@ -69,13 +74,13 @@ class SettingsTab {
 			ARRAY_FILTER_USE_KEY
 		);
 
-		// Add our own settings in the featured section.
-		$ids = array_column( $numeric_only_settings, 'id' );
-		$feature_begin_index = array_search( 'experimental_features_options', $ids, true );
-		if ( false === $feature_begin_index ) {
+		// Look for the beginning and end of the experimental_features_options section.
+		$indices = array_keys( array_column( $numeric_only_settings, 'id' ), 'experimental_features_options', true );
+		if ( 2 !== count( $indices ) ) {
 			return $settings;
 		}
 
+		// Add our own settings to the end of the featured section.
 		$order_attribution_settings = [
 			[
 				'title'   => __( 'Order Attribution', 'woocommerce-order-source-attribution' ),
@@ -86,13 +91,10 @@ class SettingsTab {
 			],
 		];
 
-		$first_section = array_slice( $numeric_only_settings, 0, $feature_begin_index + 1 );
-		$second_section = array_slice( $numeric_only_settings, $feature_begin_index + 1 );
-
 		return array_merge(
-			$first_section,
+			array_slice( $numeric_only_settings, 0, $indices[1] ),
 			$order_attribution_settings,
-			$second_section
+			array_slice( $numeric_only_settings, $indices[1] )
 		);
 	}
 }

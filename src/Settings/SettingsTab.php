@@ -83,10 +83,10 @@ class SettingsTab {
 		// Add our own settings to the end of the featured section.
 		$order_attribution_settings = [
 			[
-				'title'   => __( 'Order Attribution', 'woocommerce-order-source-attribution' ),
+				'title'   => __( 'Order Attribution (Beta)', 'woocommerce-order-source-attribution' ),
 				'type'    => 'checkbox',
 				'default' => 'yes',
-				'desc'    => __( 'Enable WooCommerce Order Source Attribution.', 'woocommerce-order-source-attribution' ),
+				'desc'    => __( 'Enable this feature to track and credit channels and campaigns that contribute to orders on your site.', 'woocommerce-order-source-attribution' ),
 				'id'      => self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID,
 			],
 		];

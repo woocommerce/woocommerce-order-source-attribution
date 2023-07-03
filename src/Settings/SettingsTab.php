@@ -84,13 +84,6 @@ class SettingsTab {
 				'desc'    => __( 'Enable WooCommerce Order Source Attribution.', 'woocommerce-order-source-attribution' ),
 				'id'      => self::SETTINGS_ENABLE_ORDER_ATTRIBUTION_ID,
 			],
-			'debug_mode' => [
-				'title'   => __( 'Order Attribution Debug Mode', 'woocommerce-order-source-attribution' ),
-				'type'    => 'checkbox',
-				'default' => 'no',
-				'desc'    => __( 'Log plugin events.', 'woocommerce-order-source-attribution' ),
-				'id'      => self::SETTINGS_DEBUG_MODE_ID,
-			],
 		];
 
 		$first_section = array_slice( $numeric_only_settings, 0, $feature_begin_index + 1 );

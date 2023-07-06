@@ -24,18 +24,7 @@ class SettingsTab {
 		add_filter(
 			"plugin_action_links_{$this->get_plugin_base_name()}",
 			function ( $links ) {
-				$settings_url = add_query_arg(
-					[
-						'page' => 'wc-settings',
-						'tab'  => 'wc_order_source_attribution',
-					],
-					admin_url( 'admin.php' )
-				);
-				$action_links = [
-					'settings' => '<a href="' . $settings_url . '">' . esc_html__( 'Settings', 'woocommerce-order-source-attribution' ) . '</a>',
-				];
-
-				return array_merge( $action_links, $links );
+				return $this->add_plugin_links( $links );
 			}
 		);
 
@@ -51,6 +40,33 @@ class SettingsTab {
 			100,
 			2
 		);
+	}
+
+	/**
+	 * Filter the plugin action links.
+	 *
+	 * @param array $links Array of links.
+	 *
+	 * @return array
+	 */
+	private function add_plugin_links( array $links ) {
+		$settings_url = add_query_arg(
+			[
+				'page'    => 'wc-settings',
+				'tab'     => 'advanced',
+				'section' => 'features',
+			],
+			admin_url( 'admin.php' )
+		);
+		$action_links = [
+			'settings' => sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( $settings_url ),
+				esc_html__( 'Settings', 'woocommerce-order-source-attribution' )
+			),
+		];
+
+		return array_merge( $action_links, $links );
 	}
 
 	/**

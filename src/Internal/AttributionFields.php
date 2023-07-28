@@ -330,7 +330,7 @@ class AttributionFields {
 				}
 			},
 			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
-			'normal'
+			'side'
 		);
 	}
 

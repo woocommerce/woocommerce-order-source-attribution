@@ -126,7 +126,7 @@ class AttributionFields {
 		add_action(
 			'add_meta_boxes',
 			function() {
-				$this->add_meta_box();
+				$this->add_meta_boxes();
 			}
 		);
 
@@ -314,11 +314,24 @@ class AttributionFields {
 	}
 
 	/**
+	 * Display the customer history template for the customer.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $customer_id
+	 *
+	 * @return void
+	 */
+	private function display_customer_history( int $customer_id ) {
+		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/customer-history.php';
+	}
+
+	/**
 	 * Add our own meta box to the order display screen.
 	 *
 	 * @return void
 	 */
-	private function add_meta_box() {
+	private function add_meta_boxes() {
 		add_meta_box(
 			'woocommerce-order-source-data',
 			__( 'Order information', 'woocommerce-order-source-attribution' ),
@@ -331,6 +344,21 @@ class AttributionFields {
 			},
 			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
 			'side'
+		);
+
+		add_meta_box(
+			'woocommerce-customer-history',
+			__( 'Customer history', 'woocommerce-order-source-attribution' ),
+			function( $post ) {
+				try {
+					$order    = $this->get_hpos_order_object( $post );
+					$this->display_customer_history( $order->get_customer_id() );
+				} catch ( Exception $e ) {
+					$this->get_logger()->log_exception( $e, __METHOD__ );
+				}
+			},
+			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
+			'side',
 		);
 	}
 

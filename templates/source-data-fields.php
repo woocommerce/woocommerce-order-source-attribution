@@ -10,9 +10,7 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="source_data form-field form-field-wide">
-	<h3><?php esc_html_e( 'Source Info', 'woocommerce-order-source-attribution' ); ?></h3>
-
+<div class="source_data form-field form-field-wide order-source-attribution-metabox">
 	<?php
 	foreach ( $meta as $item ) {
 		switch ( $item->key ) {

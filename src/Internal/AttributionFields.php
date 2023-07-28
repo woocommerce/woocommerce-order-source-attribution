@@ -73,8 +73,15 @@ class AttributionFields {
 	public function register() {
 		add_action(
 			'wp_enqueue_scripts',
-			function () {
+			function() {
 				$this->enqueue_scripts_and_styles();
+			}
+		);
+
+		add_action(
+			'admin_enqueue_scripts',
+			function() {
+				$this->enqueue_admin_styles();
 			}
 		);
 
@@ -192,6 +199,23 @@ class AttributionFields {
 		];
 
 		wp_localize_script( 'woocommerce-order-attribute-source-js', 'wc_order_attribute_source_params', $params );
+	}
+
+	/**
+	 * Enqueue the stylesheet for admin pages.
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	private function enqueue_admin_styles() {
+		$screen            = get_current_screen();
+		$order_page_suffix = $this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
+		if ( $screen->id === $order_page_suffix ) {
+			wp_enqueue_style(
+				'woocommerce-order-source-attribution-admin-css',
+				plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+			);
+		}
 	}
 
 	/**

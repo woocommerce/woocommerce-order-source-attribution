@@ -86,7 +86,7 @@ class AttributionFields {
 		);
 
 		// Include our hidden fields on order notes and registration form.
-		$source_form_fields = function () {
+		$source_form_fields = function() {
 			$this->source_form_fields();
 		};
 
@@ -96,13 +96,13 @@ class AttributionFields {
 		// Update data based on submitted fields.
 		add_action(
 			'woocommerce_checkout_order_created',
-			function ( $order ) {
+			function( $order ) {
 				$this->set_order_source_data( $order );
 			}
 		);
 		add_action(
 			'user_register',
-			function ( $customer_id ) {
+			function( $customer_id ) {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
@@ -140,7 +140,7 @@ class AttributionFields {
 		// Add source data to the order table.
 		add_filter(
 			'manage_edit-shop_order_columns',
-			function ( $columns ) {
+			function( $columns ) {
 				$columns['origin'] = esc_html__( 'Origin', 'woocommerce-order-source-attribution' );
 
 				return $columns;
@@ -149,7 +149,7 @@ class AttributionFields {
 
 		add_action(
 			'manage_shop_order_posts_custom_column',
-			function ( $column_name, $order_id ) {
+			function( $column_name, $order_id ) {
 				if ( 'origin' !== $column_name ) {
 					return;
 				}
@@ -180,9 +180,7 @@ class AttributionFields {
 			true
 		);
 
-		/**
-		 * Pass parameters to Grow JS.
-		 */
+		// Pass parameters to Order Source Attribution JS.
 		$params = [
 			'lifetime'      => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
 			'session'       => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
@@ -371,7 +369,7 @@ class AttributionFields {
 		add_meta_box(
 			'woocommerce-order-source-data',
 			__( 'Order information', 'woocommerce-order-source-attribution' ),
-			function ( $post ) {
+			function( $post ) {
 				try {
 					$this->display_order_source_data( $this->get_hpos_order_object( $post ) );
 				} catch ( Exception $e ) {
@@ -408,7 +406,7 @@ class AttributionFields {
 	private function filter_meta_data( array $meta ): array {
 		return array_filter(
 			$meta,
-			function ( WC_Meta_Data $meta ) {
+			function( WC_Meta_Data $meta ) {
 				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
 			}
 		);

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 $orders = wc_get_orders(
 	[
 		'customer_id' => $customer_id,
-		'status' => array_map(
+		'status'      => array_map(
 			function( $value ) {
 				return "wc-{$value}";
 			},

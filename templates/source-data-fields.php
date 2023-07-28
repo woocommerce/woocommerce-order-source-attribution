@@ -18,9 +18,9 @@ $keyed_meta = array_combine(
 );
 
 $prefix = function( $name ) {
-	if ( $name === 'type' ) {
+	if ( 'type' === $name ) {
 		$name = 'source_type';
-	} elseif ( $name === 'url' ) {
+	} elseif ( 'url' === $name ) {
 		$name = 'referrer';
 	}
 

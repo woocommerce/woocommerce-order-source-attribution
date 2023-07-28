@@ -205,6 +205,8 @@ class AttributionFields {
 			wp_enqueue_style(
 				'woocommerce-order-source-attribution-admin-css',
 				plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+				[],
+				WC_ORDER_ATTRIBUTE_SOURCE_VERSION
 			);
 		}
 	}
@@ -385,7 +387,7 @@ class AttributionFields {
 			__( 'Customer history', 'woocommerce-order-source-attribution' ),
 			function( $post ) {
 				try {
-					$order    = $this->get_hpos_order_object( $post );
+					$order = $this->get_hpos_order_object( $post );
 					$this->display_customer_history( $order->get_customer_id() );
 				} catch ( Exception $e ) {
 					$this->get_logger()->log_exception( $e, __METHOD__ );

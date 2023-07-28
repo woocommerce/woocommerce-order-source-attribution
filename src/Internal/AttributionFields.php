@@ -321,7 +321,7 @@ class AttributionFields {
 	private function add_meta_box() {
 		add_meta_box(
 			'woocommerce-order-source-data',
-			__( 'Order Source Data', 'woocommerce-order-source-attribution' ),
+			__( 'Order information', 'woocommerce-order-source-attribution' ),
 			function ( $post ) {
 				try {
 					$this->display_order_source_data( $this->get_hpos_order_object( $post ) );

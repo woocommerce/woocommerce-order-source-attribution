@@ -153,14 +153,7 @@ class AttributionFields {
 				if ( 'origin' !== $column_name ) {
 					return;
 				}
-
-				// Ensure we've got a valid order.
-				try {
-					$order = $this->get_hpos_order_object( $order_id );
-					$this->output_origin_column( $order );
-				} catch ( Exception $e ) {
-					return;
-				}
+				$this->display_origin_column( $order_id );
 			},
 			10,
 			2
@@ -348,6 +341,25 @@ class AttributionFields {
 	 */
 	private function display_customer_history( int $customer_id ) {
 		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/customer-history.php';
+	}
+
+	/**
+	 * Display the origin column in the orders table.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $order_id
+	 *
+	 * @return void
+	 */
+	private function display_origin_column( $order_id ): void {
+		// Ensure we've got a valid order.
+		try {
+			$order = $this->get_hpos_order_object( $order_id );
+			$this->output_origin_column( $order );
+		} catch ( Exception $e ) {
+			return;
+		}
 	}
 
 	/**

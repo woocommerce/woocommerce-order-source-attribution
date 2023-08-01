@@ -340,6 +340,11 @@ class AttributionFields {
 	 * @return void
 	 */
 	private function display_customer_history( int $customer_id ) {
+		// Calculate the data needed for the template.
+		$order_count   = wc_get_customer_order_count( $customer_id );
+		$total_spent   = wc_get_customer_total_spent( $customer_id );
+		$average_spent = $order_count ? $total_spent / $order_count : 0;
+
 		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/customer-history.php';
 	}
 

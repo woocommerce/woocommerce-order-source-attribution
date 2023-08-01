@@ -26,7 +26,14 @@ defined( 'ABSPATH' ) || exit;
 		<?php echo esc_html( $order_count ); ?>
 	</span>
 
-	<h4><?php esc_html_e( 'Total spend', 'woocommerce-order-source-attribution' ); ?></h4>
+	<h4>
+		<?php
+		esc_html_e( 'Total revenue', 'woocommerce-order-source-attribution' );
+		echo wc_help_tip(
+			__( "This is the Customer Lifetime Value, or the total amount you have earned from this customer's orders.", 'woocommerce-order-source-attribution' )
+		); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+		?>
+	</h4>
 	<span class="order-source-attribution-total-spend">
 		<?php echo wc_price( $total_spent ); /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?>
 	</span>

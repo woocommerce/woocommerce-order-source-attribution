@@ -393,7 +393,7 @@ class AttributionFields {
 			function( $post ) {
 				try {
 					$order = $this->get_hpos_order_object( $post );
-					$this->display_customer_history( $order->get_customer_id() );
+					$this->display_customer_history( (int) $order->get_customer_id() );
 				} catch ( Exception $e ) {
 					$this->get_logger()->log_exception( $e, __METHOD__ );
 				}

@@ -31,14 +31,7 @@ $prefix = function( $name ) {
 <div class="source_data form-field form-field-wide order-source-attribution-metabox">
 
 	<?php if ( array_key_exists( $prefix( 'type' ), $keyed_meta ) ) : ?>
-		<h4>
-			<?php
-			esc_html_e( 'Origin', 'woocommerce-order-source-attribution' );
-			echo wc_help_tip(
-				__( 'The origin of the order', 'woocommerce-order-source-attribution' )
-			); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-			?>
-		</h4>
+		<h4><?php esc_html_e( 'Origin', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-origin">
 			<?php echo esc_html( $keyed_meta[ $prefix( 'type' ) ]->value ); ?>
 		</span>

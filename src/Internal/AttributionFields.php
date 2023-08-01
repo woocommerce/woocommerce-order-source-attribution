@@ -73,13 +73,20 @@ class AttributionFields {
 	public function register() {
 		add_action(
 			'wp_enqueue_scripts',
-			function () {
+			function() {
 				$this->enqueue_scripts_and_styles();
 			}
 		);
 
+		add_action(
+			'admin_enqueue_scripts',
+			function() {
+				$this->enqueue_admin_styles();
+			}
+		);
+
 		// Include our hidden fields on order notes and registration form.
-		$source_form_fields = function () {
+		$source_form_fields = function() {
 			$this->source_form_fields();
 		};
 
@@ -89,13 +96,13 @@ class AttributionFields {
 		// Update data based on submitted fields.
 		add_action(
 			'woocommerce_checkout_order_created',
-			function ( $order ) {
+			function( $order ) {
 				$this->set_order_source_data( $order );
 			}
 		);
 		add_action(
 			'user_register',
-			function ( $customer_id ) {
+			function( $customer_id ) {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
@@ -126,14 +133,14 @@ class AttributionFields {
 		add_action(
 			'add_meta_boxes',
 			function() {
-				$this->add_meta_box();
+				$this->add_meta_boxes();
 			}
 		);
 
 		// Add source data to the order table.
 		add_filter(
 			'manage_edit-shop_order_columns',
-			function ( $columns ) {
+			function( $columns ) {
 				$columns['origin'] = esc_html__( 'Origin', 'woocommerce-order-source-attribution' );
 
 				return $columns;
@@ -142,18 +149,11 @@ class AttributionFields {
 
 		add_action(
 			'manage_shop_order_posts_custom_column',
-			function ( $column_name, $order_id ) {
+			function( $column_name, $order_id ) {
 				if ( 'origin' !== $column_name ) {
 					return;
 				}
-
-				// Ensure we've got a valid order.
-				try {
-					$order = $this->get_hpos_order_object( $order_id );
-					$this->output_origin_column( $order );
-				} catch ( Exception $e ) {
-					return;
-				}
+				$this->display_origin_column( $order_id );
 			},
 			10,
 			2
@@ -180,9 +180,7 @@ class AttributionFields {
 			true
 		);
 
-		/**
-		 * Pass parameters to Grow JS.
-		 */
+		// Pass parameters to Order Source Attribution JS.
 		$params = [
 			'lifetime'      => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
 			'session'       => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
@@ -192,6 +190,25 @@ class AttributionFields {
 		];
 
 		wp_localize_script( 'woocommerce-order-attribute-source-js', 'wc_order_attribute_source_params', $params );
+	}
+
+	/**
+	 * Enqueue the stylesheet for admin pages.
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	private function enqueue_admin_styles() {
+		$screen            = get_current_screen();
+		$order_page_suffix = $this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
+		if ( $screen->id === $order_page_suffix ) {
+			wp_enqueue_style(
+				'woocommerce-order-source-attribution-admin-css',
+				plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+				[],
+				WC_ORDER_ATTRIBUTE_SOURCE_VERSION
+			);
+		}
 	}
 
 	/**
@@ -314,15 +331,52 @@ class AttributionFields {
 	}
 
 	/**
+	 * Display the customer history template for the customer.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $customer_id
+	 *
+	 * @return void
+	 */
+	private function display_customer_history( int $customer_id ) {
+		// Calculate the data needed for the template.
+		$order_count   = wc_get_customer_order_count( $customer_id );
+		$total_spent   = wc_get_customer_total_spent( $customer_id );
+		$average_spent = $order_count ? $total_spent / $order_count : 0;
+
+		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/customer-history.php';
+	}
+
+	/**
+	 * Display the origin column in the orders table.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $order_id
+	 *
+	 * @return void
+	 */
+	private function display_origin_column( $order_id ): void {
+		// Ensure we've got a valid order.
+		try {
+			$order = $this->get_hpos_order_object( $order_id );
+			$this->output_origin_column( $order );
+		} catch ( Exception $e ) {
+			return;
+		}
+	}
+
+	/**
 	 * Add our own meta box to the order display screen.
 	 *
 	 * @return void
 	 */
-	private function add_meta_box() {
+	private function add_meta_boxes() {
 		add_meta_box(
 			'woocommerce-order-source-data',
-			__( 'Order Source Data', 'woocommerce-order-source-attribution' ),
-			function ( $post ) {
+			__( 'Order information', 'woocommerce-order-source-attribution' ),
+			function( $post ) {
 				try {
 					$this->display_order_source_data( $this->get_hpos_order_object( $post ) );
 				} catch ( Exception $e ) {
@@ -330,7 +384,22 @@ class AttributionFields {
 				}
 			},
 			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
-			'normal'
+			'side'
+		);
+
+		add_meta_box(
+			'woocommerce-customer-history',
+			__( 'Customer history', 'woocommerce-order-source-attribution' ),
+			function( $post ) {
+				try {
+					$order = $this->get_hpos_order_object( $post );
+					$this->display_customer_history( $order->get_customer_id() );
+				} catch ( Exception $e ) {
+					$this->get_logger()->log_exception( $e, __METHOD__ );
+				}
+			},
+			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
+			'side',
 		);
 	}
 
@@ -344,7 +413,7 @@ class AttributionFields {
 	private function filter_meta_data( array $meta ): array {
 		return array_filter(
 			$meta,
-			function ( WC_Meta_Data $meta ) {
+			function( WC_Meta_Data $meta ) {
 				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
 			}
 		);

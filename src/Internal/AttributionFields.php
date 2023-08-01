@@ -60,8 +60,8 @@ class AttributionFields {
 	 * @param LoggerInterface $logger
 	 */
 	public function __construct( LoggerInterface $logger ) {
-		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
-		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+		$this->fields = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
+		$this->set_field_prefix();
 		$this->set_logger( $logger );
 	}
 
@@ -417,6 +417,22 @@ class AttributionFields {
 				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
 			}
 		);
+	}
+
+	/**
+	 * Set the meta prefix for our fields.
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	private function set_field_prefix(): void {
+		$prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+
+		// Remove leading and trailing underscores.
+		$prefix = trim( $prefix, '_' );
+
+		// Ensure the prfix ends with _, and set the prefix.
+		$this->field_prefix = "{$prefix}_";
 	}
 
 	/**

@@ -7,7 +7,6 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\LoggerTrait;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
-use Automattic\WooCommerce\Utilities\OrderUtil;
 use Exception;
 use WC_Customer;
 use WC_Meta_Data;
@@ -212,7 +211,7 @@ class AttributionFields {
 	}
 
 	/**
-	 * Add grow hidden input fields for checkout & customer register froms.
+	 * Add attribution hidden input fields for checkout & customer register froms.
 	 */
 	private function source_form_fields() {
 		foreach ( $this->fields as $field ) {

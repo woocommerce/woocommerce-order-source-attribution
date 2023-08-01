@@ -216,7 +216,7 @@ class AttributionFields {
 	 */
 	private function source_form_fields() {
 		foreach ( $this->fields as $field ) {
-			printf( '<input type="hidden" name="%s" value="" />', esc_attr( $this->prefix_field( $field ) ) );
+			printf( '<input type="hidden" name="%s" value="" />', esc_attr( $this->get_prefixed_field( $field ) ) );
 		}
 	}
 
@@ -257,40 +257,46 @@ class AttributionFields {
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
 			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ?? '' ) );
+			$value = sanitize_text_field( wp_unslash( $_POST[ $this->get_prefixed_field( $field ) ] ?? '' ) );
 			if ( '(none)' === $value ) {
 				continue;
 			}
 
-			switch ( $field ) {
-				case 'type':
-					$meta_key = '_wc_order_source_attribution_source_type';
-					break;
-
-				case 'url':
-					$meta_key = '_wc_order_source_attribution_referrer';
-					break;
-
-				default:
-					$meta_key = "_wc_order_source_attribution_{$field}";
-					break;
-			}
-
-			$values[ $meta_key ] = $value;
+			$values[ $this->get_meta_prefixed_field( $field ) ] = $value;
 		}
 
 		return $values;
 	}
 
 	/**
-	 * Adds prefix to field name.
+	 * Get the field name with the appropriate prefix.
 	 *
 	 * @param string $field Field name.
 	 *
-	 * @return string
+	 * @return string The prefixed field name.
 	 */
-	private function prefix_field( $field ): string {
+	private function get_prefixed_field( $field ): string {
 		return "{$this->field_prefix}{$field}";
+	}
+
+	/**
+	 * Get the field name with the meta prefix.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $field The field name.
+	 *
+	 * @return string The prefixed field name.
+	 */
+	private function get_meta_prefixed_field( string $field ) {
+		// Map some of the fields to the correct meta name.
+		if ( 'type' === $field ) {
+			$field = 'source_type';
+		} elseif ( 'url' === $field ) {
+			$field = 'referrer';
+		}
+
+		return "_{$this->get_prefixed_field( $field )}";
 	}
 
 	/**
@@ -411,12 +417,16 @@ class AttributionFields {
 	 * @return array
 	 */
 	private function filter_meta_data( array $meta ): array {
-		return array_filter(
-			$meta,
-			function( WC_Meta_Data $meta ) {
-				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
+		$return = [];
+		$prefix = $this->get_meta_prefixed_field( '' );
+
+		foreach ( $meta as $item ) {
+			if ( str_starts_with( $item->key, $prefix ) ) {
+				$return[ $item->key ] = $item;
 			}
-		);
+		}
+
+		return $return;
 	}
 
 	/**
@@ -460,8 +470,8 @@ class AttributionFields {
 	 * @return void
 	 */
 	public function output_origin_column( WC_Order $order ) {
-		$source_type      = $order->get_meta( '_wc_order_source_attribution_source_type' );
-		$source           = $order->get_meta( '_wc_order_source_attribution_utm_source' ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
+		$source_type      = $order->get_meta( $this->get_meta_prefixed_field( 'type' ) );
+		$source           = $order->get_meta( $this->get_meta_prefixed_field( 'utm_source' ) ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
 		$formatted_source = ucfirst( trim( $source, '()' ) );
 		$label            = $this->get_source_label( $source_type );
 

@@ -53,7 +53,14 @@ defined( 'ABSPATH' ) || exit;
 	<!-- todo: Device type -->
 
 	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'session_pages' ), $meta ) ) : ?>
-		<h4><?php esc_html_e( 'Session page views', 'woocommerce-order-source-attribution' ); ?></h4>
+		<h4>
+			<?php
+			esc_html_e( 'Session page views', 'woocommerce-order-source-attribution' );
+			echo wc_help_tip(
+				__( 'The number of unique pages viewed by the customer prior to this order.', 'woocommerce-order-source-attribution' )
+			); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+			?>
+		</h4>
 		<span class="order-source-attribution-utm-session-pages">
 			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'session_pages' ) ]->value ); ?>
 		</span>

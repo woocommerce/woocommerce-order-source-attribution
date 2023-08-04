@@ -8,51 +8,51 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Variables used in this file.
  *
- * @var WC_Meta_Data[]    $meta
+ * @var array             $meta
  * @var AttributionFields $this
  */
 ?>
 
 <div class="source_data form-field form-field-wide order-source-attribution-metabox">
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'type' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'origin', $meta ) ) : ?>
 		<h4><?php esc_html_e( 'Origin', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-origin">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'type' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'origin' ] ); ?>
 		</span>
 	<?php endif; ?>
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'source_type' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'type', $meta ) ) : ?>
 		<h4><?php esc_html_e( 'Source type', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-source_type">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'source_type' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'type' ] ); ?>
 		</span>
 	<?php endif; ?>
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'utm_campaign' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'utm_campaign', $meta ) ) : ?>
 		<h4><?php esc_html_e( 'UTM campaign', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-utm-campaign">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'utm_campaign' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'utm_campaign' ] ); ?>
 		</span>
 	<?php endif; ?>
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'utm_source' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'utm_source', $meta ) ) : ?>
 		<h4><?php esc_html_e( 'UTM source', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-utm-source">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'utm_source' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'utm_source' ] ); ?>
 		</span>
 	<?php endif; ?>
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'utm_medium' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'utm_medium', $meta ) ) : ?>
 		<h4><?php esc_html_e( 'UTM medium', 'woocommerce-order-source-attribution' ); ?></h4>
 		<span class="order-source-attribution-utm-medium">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'utm_medium' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'utm_medium' ] ); ?>
 		</span>
 	<?php endif; ?>
 
 	<!-- todo: Device type -->
 
-	<?php if ( array_key_exists( $this->get_meta_prefixed_field( 'session_pages' ), $meta ) ) : ?>
+	<?php if ( array_key_exists( 'session_pages', $meta ) ) : ?>
 		<h4>
 			<?php
 			esc_html_e( 'Session page views', 'woocommerce-order-source-attribution' );
@@ -62,7 +62,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 		</h4>
 		<span class="order-source-attribution-utm-session-pages">
-			<?php echo esc_html( $meta[ $this->get_meta_prefixed_field( 'session_pages' ) ]->value ); ?>
+			<?php echo esc_html( $meta[ 'session_pages' ] ); ?>
 		</span>
 	<?php endif; ?>
 </div>

@@ -287,7 +287,7 @@ class AttributionFields {
 	 *
 	 * @return string The prefixed field name.
 	 */
-	private function get_meta_prefixed_field( string $field ) {
+	private function get_meta_prefixed_field( string $field ): string {
 		// Map some of the fields to the correct meta name.
 		if ( 'type' === $field ) {
 			$field = 'source_type';
@@ -296,6 +296,28 @@ class AttributionFields {
 		}
 
 		return "_{$this->get_prefixed_field( $field )}";
+	}
+
+	/**
+	 * Remove the meta prefix from the field name.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $field The prefixed field.
+	 *
+	 * @return string
+	 */
+	private function unprefix_meta_field( string $field ): string {
+		$return = str_replace( "_{$this->field_prefix}", '', $field );
+
+		// Map some of the fields to the correct meta name.
+		if ( 'source_type' === $return ) {
+			$return = 'type';
+		} elseif ( 'referrer' === $return ) {
+			$return = 'url';
+		}
+
+		return $return;
 	}
 
 	/**
@@ -421,9 +443,31 @@ class AttributionFields {
 
 		foreach ( $meta as $item ) {
 			if ( str_starts_with( $item->key, $prefix ) ) {
-				$return[ $item->key ] = $item;
+				$return[ $this->unprefix_meta_field( $item->key ) ] = $item->value;
 			}
 		}
+
+		// Determine the origin based on source type and referrer.
+		$source_type = $return[ 'type' ] ?? '';
+		switch ( $source_type ) {
+			case 'organic':
+				$origin = __( 'Organic search', 'woocommerce-order-source-attribution' );
+				break;
+
+			case 'referral':
+				$origin = __( 'Referral', 'woocommerce-order-source-attribution' );
+				break;
+
+			case 'typein':
+				$origin = __( 'Direct', 'woocommerce-order-source-attribution' );
+				break;
+
+			default:
+				$origin = __( 'Unknown', 'woocommerce-order-source-attribution' );
+				break;
+		}
+
+		$return['origin'] = $origin;
 
 		return $return;
 	}

@@ -7,6 +7,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\LoggerTrait;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
+use Detection\MobileDetect;
 use Exception;
 use WC_Customer;
 use WC_Meta_Data;
@@ -444,6 +445,18 @@ class AttributionFields {
 		foreach ( $meta as $item ) {
 			if ( str_starts_with( $item->key, $prefix ) ) {
 				$return[ $this->unprefix_meta_field( $item->key ) ] = $item->value;
+			}
+		}
+
+		// Determine the device type from the user agent.
+		if ( array_key_exists( 'user_agent', $return ) ) {
+			$detector = new MobileDetect( null, $return['user_agent'] );
+			if ( $detector->isMobile() ) {
+				$return['device_type'] = __( 'Mobile', 'woocommerce-order-source-attribution' );
+			} elseif ( $detector->isTablet() ) {
+				$return['device_type'] = __( 'Tablet', 'woocommerce-order-source-attribution' );
+			} else {
+				$return['device_type'] = __( 'Desktop', 'woocommerce-order-source-attribution' );
 			}
 		}
 

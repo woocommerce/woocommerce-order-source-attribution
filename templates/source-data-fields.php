@@ -50,7 +50,12 @@ defined( 'ABSPATH' ) || exit;
 		</span>
 	<?php endif; ?>
 
-	<!-- todo: Device type -->
+	<?php if ( array_key_exists( 'device_type', $meta ) ) : ?>
+		<h4><?php esc_html_e( 'Device type', 'woocommerce-order-source-attribution' ); ?></h4>
+		<span class="order-source-attribution-device_type">
+			<?php echo esc_html( $meta[ 'device_type' ] ); ?>
+		</span>
+	<?php endif; ?>
 
 	<?php if ( array_key_exists( 'session_pages', $meta ) ) : ?>
 		<h4>

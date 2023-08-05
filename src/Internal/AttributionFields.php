@@ -81,7 +81,7 @@ class AttributionFields {
 		add_action(
 			'admin_enqueue_scripts',
 			function() {
-				$this->enqueue_admin_styles();
+				$this->enqueue_admin_scripts_and_styles();
 			}
 		);
 
@@ -198,17 +198,26 @@ class AttributionFields {
 	 * @since x.x.x
 	 * @return void
 	 */
-	private function enqueue_admin_styles() {
+	private function enqueue_admin_scripts_and_styles() {
 		$screen            = get_current_screen();
 		$order_page_suffix = $this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
-		if ( $screen->id === $order_page_suffix ) {
-			wp_enqueue_style(
-				'woocommerce-order-source-attribution-admin-css',
-				plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
-				[],
-				WC_ORDER_ATTRIBUTE_SOURCE_VERSION
-			);
+		if ( $screen->id !== $order_page_suffix ) {
+			return;
 		}
+
+		wp_enqueue_style(
+			'woocommerce-order-source-attribution-admin-css',
+			plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+			[],
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION
+		);
+
+		wp_enqueue_script(
+			'woocommerce-order-source-attribution-admin-js',
+			plugins_url( 'assets/js/order-source-attribution-admin.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+			[ 'jquery' ],
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
+		);
 	}
 
 	/**

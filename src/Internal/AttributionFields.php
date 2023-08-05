@@ -212,11 +212,12 @@ class AttributionFields {
 			WC_ORDER_ATTRIBUTE_SOURCE_VERSION
 		);
 
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 		wp_enqueue_script(
 			'woocommerce-order-source-attribution-admin-js',
 			plugins_url( 'assets/js/order-source-attribution-admin.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
 			[ 'jquery' ],
-			WC_ORDER_ATTRIBUTE_SOURCE_VERSION,
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION
 		);
 	}
 
@@ -470,7 +471,7 @@ class AttributionFields {
 		}
 
 		// Determine the origin based on source type and referrer.
-		$source_type = $return[ 'type' ] ?? '';
+		$source_type = $return['type'] ?? '';
 		switch ( $source_type ) {
 			case 'organic':
 				$origin = __( 'Organic search', 'woocommerce-order-source-attribution' );

@@ -4,7 +4,8 @@
     "license": "GPL-3",
     "require": {
         "php": ">=7.4",
-        "automattic/jetpack-autoloader": "^2.11"
+        "automattic/jetpack-autoloader": "^2.11",
+        "mobiledetect/mobiledetectlib": "^3.74"
     },
     "autoload": {
         "psr-4": {

@@ -7,7 +7,7 @@ namespace Automattic\WooCommerce\OrderSourceAttribution\Internal;
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\OrderSourceAttribution\HelperTraits\LoggerTrait;
 use Automattic\WooCommerce\OrderSourceAttribution\Logging\LoggerInterface;
-use Automattic\WooCommerce\Utilities\OrderUtil;
+use Detection\MobileDetect;
 use Exception;
 use WC_Customer;
 use WC_Meta_Data;
@@ -60,8 +60,8 @@ class AttributionFields {
 	 * @param LoggerInterface $logger
 	 */
 	public function __construct( LoggerInterface $logger ) {
-		$this->fields       = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
-		$this->field_prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+		$this->fields = (array) apply_filters( 'wc_order_source_attribution_tracking_fields', $this->default_fields );
+		$this->set_field_prefix();
 		$this->set_logger( $logger );
 	}
 
@@ -73,13 +73,20 @@ class AttributionFields {
 	public function register() {
 		add_action(
 			'wp_enqueue_scripts',
-			function () {
+			function() {
 				$this->enqueue_scripts_and_styles();
 			}
 		);
 
+		add_action(
+			'admin_enqueue_scripts',
+			function() {
+				$this->enqueue_admin_scripts_and_styles();
+			}
+		);
+
 		// Include our hidden fields on order notes and registration form.
-		$source_form_fields = function () {
+		$source_form_fields = function() {
 			$this->source_form_fields();
 		};
 
@@ -89,13 +96,13 @@ class AttributionFields {
 		// Update data based on submitted fields.
 		add_action(
 			'woocommerce_checkout_order_created',
-			function ( $order ) {
+			function( $order ) {
 				$this->set_order_source_data( $order );
 			}
 		);
 		add_action(
 			'user_register',
-			function ( $customer_id ) {
+			function( $customer_id ) {
 				try {
 					$customer = new WC_Customer( $customer_id );
 					$this->set_customer_source_data( $customer );
@@ -126,14 +133,14 @@ class AttributionFields {
 		add_action(
 			'add_meta_boxes',
 			function() {
-				$this->add_meta_box();
+				$this->add_meta_boxes();
 			}
 		);
 
 		// Add source data to the order table.
 		add_filter(
 			'manage_edit-shop_order_columns',
-			function ( $columns ) {
+			function( $columns ) {
 				$columns['origin'] = esc_html__( 'Origin', 'woocommerce-order-source-attribution' );
 
 				return $columns;
@@ -142,18 +149,11 @@ class AttributionFields {
 
 		add_action(
 			'manage_shop_order_posts_custom_column',
-			function ( $column_name, $order_id ) {
+			function( $column_name, $order_id ) {
 				if ( 'origin' !== $column_name ) {
 					return;
 				}
-
-				// Ensure we've got a valid order.
-				try {
-					$order = $this->get_hpos_order_object( $order_id );
-					$this->output_origin_column( $order );
-				} catch ( Exception $e ) {
-					return;
-				}
+				$this->display_origin_column( $order_id );
 			},
 			10,
 			2
@@ -180,9 +180,7 @@ class AttributionFields {
 			true
 		);
 
-		/**
-		 * Pass parameters to Grow JS.
-		 */
+		// Pass parameters to Order Source Attribution JS.
 		$params = [
 			'lifetime'      => (int) apply_filters( 'wc_order_source_attribution_cookie_lifetime_months', 6 ),
 			'session'       => (int) apply_filters( 'wc_order_source_attribution_session_length_minutes', 30 ),
@@ -195,11 +193,40 @@ class AttributionFields {
 	}
 
 	/**
-	 * Add grow hidden input fields for checkout & customer register froms.
+	 * Enqueue the stylesheet for admin pages.
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	private function enqueue_admin_scripts_and_styles() {
+		$screen            = get_current_screen();
+		$order_page_suffix = $this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
+		if ( $screen->id !== $order_page_suffix ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'woocommerce-order-source-attribution-admin-css',
+			plugins_url( 'assets/css/order-source-attribution.css', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+			[],
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION
+		);
+
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_enqueue_script(
+			'woocommerce-order-source-attribution-admin-js',
+			plugins_url( 'assets/js/order-source-attribution-admin.js', WC_ORDER_ATTRIBUTE_SOURCE_FILE ),
+			[ 'jquery' ],
+			WC_ORDER_ATTRIBUTE_SOURCE_VERSION
+		);
+	}
+
+	/**
+	 * Add attribution hidden input fields for checkout & customer register froms.
 	 */
 	private function source_form_fields() {
 		foreach ( $this->fields as $field ) {
-			printf( '<input type="hidden" name="%s" value="" />', esc_attr( $this->prefix_field( $field ) ) );
+			printf( '<input type="hidden" name="%s" value="" />', esc_attr( $this->get_prefixed_field( $field ) ) );
 		}
 	}
 
@@ -240,40 +267,68 @@ class AttributionFields {
 		// Look through each field in POST data.
 		foreach ( $this->fields as $field ) {
 			// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			$value = sanitize_text_field( wp_unslash( $_POST[ $this->prefix_field( $field ) ] ?? '' ) );
+			$value = sanitize_text_field( wp_unslash( $_POST[ $this->get_prefixed_field( $field ) ] ?? '' ) );
 			if ( '(none)' === $value ) {
 				continue;
 			}
 
-			switch ( $field ) {
-				case 'type':
-					$meta_key = '_wc_order_source_attribution_source_type';
-					break;
-
-				case 'url':
-					$meta_key = '_wc_order_source_attribution_referrer';
-					break;
-
-				default:
-					$meta_key = "_wc_order_source_attribution_{$field}";
-					break;
-			}
-
-			$values[ $meta_key ] = $value;
+			$values[ $this->get_meta_prefixed_field( $field ) ] = $value;
 		}
 
 		return $values;
 	}
 
 	/**
-	 * Adds prefix to field name.
+	 * Get the field name with the appropriate prefix.
 	 *
 	 * @param string $field Field name.
 	 *
+	 * @return string The prefixed field name.
+	 */
+	private function get_prefixed_field( $field ): string {
+		return "{$this->field_prefix}{$field}";
+	}
+
+	/**
+	 * Get the field name with the meta prefix.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $field The field name.
+	 *
+	 * @return string The prefixed field name.
+	 */
+	private function get_meta_prefixed_field( string $field ): string {
+		// Map some of the fields to the correct meta name.
+		if ( 'type' === $field ) {
+			$field = 'source_type';
+		} elseif ( 'url' === $field ) {
+			$field = 'referrer';
+		}
+
+		return "_{$this->get_prefixed_field( $field )}";
+	}
+
+	/**
+	 * Remove the meta prefix from the field name.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $field The prefixed field.
+	 *
 	 * @return string
 	 */
-	private function prefix_field( $field ): string {
-		return "{$this->field_prefix}{$field}";
+	private function unprefix_meta_field( string $field ): string {
+		$return = str_replace( "_{$this->field_prefix}", '', $field );
+
+		// Map some of the fields to the correct meta name.
+		if ( 'source_type' === $return ) {
+			$return = 'type';
+		} elseif ( 'referrer' === $return ) {
+			$return = 'url';
+		}
+
+		return $return;
 	}
 
 	/**
@@ -314,15 +369,52 @@ class AttributionFields {
 	}
 
 	/**
+	 * Display the customer history template for the customer.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $customer_id
+	 *
+	 * @return void
+	 */
+	private function display_customer_history( int $customer_id ) {
+		// Calculate the data needed for the template.
+		$order_count   = wc_get_customer_order_count( $customer_id );
+		$total_spent   = wc_get_customer_total_spent( $customer_id );
+		$average_spent = $order_count ? $total_spent / $order_count : 0;
+
+		include dirname( WC_ORDER_ATTRIBUTE_SOURCE_FILE ) . '/templates/customer-history.php';
+	}
+
+	/**
+	 * Display the origin column in the orders table.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int $order_id
+	 *
+	 * @return void
+	 */
+	private function display_origin_column( $order_id ): void {
+		// Ensure we've got a valid order.
+		try {
+			$order = $this->get_hpos_order_object( $order_id );
+			$this->output_origin_column( $order );
+		} catch ( Exception $e ) {
+			return;
+		}
+	}
+
+	/**
 	 * Add our own meta box to the order display screen.
 	 *
 	 * @return void
 	 */
-	private function add_meta_box() {
+	private function add_meta_boxes() {
 		add_meta_box(
 			'woocommerce-order-source-data',
-			__( 'Order Source Data', 'woocommerce-order-source-attribution' ),
-			function ( $post ) {
+			__( 'Order information', 'woocommerce-order-source-attribution' ),
+			function( $post ) {
 				try {
 					$this->display_order_source_data( $this->get_hpos_order_object( $post ) );
 				} catch ( Exception $e ) {
@@ -330,7 +422,22 @@ class AttributionFields {
 				}
 			},
 			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
-			'normal'
+			'side'
+		);
+
+		add_meta_box(
+			'woocommerce-customer-history',
+			__( 'Customer history', 'woocommerce-order-source-attribution' ),
+			function( $post ) {
+				try {
+					$order = $this->get_hpos_order_object( $post );
+					$this->display_customer_history( (int) $order->get_customer_id() );
+				} catch ( Exception $e ) {
+					$this->get_logger()->log_exception( $e, __METHOD__ );
+				}
+			},
+			$this->is_hpos_enabled() ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order',
+			'side',
 		);
 	}
 
@@ -342,12 +449,66 @@ class AttributionFields {
 	 * @return array
 	 */
 	private function filter_meta_data( array $meta ): array {
-		return array_filter(
-			$meta,
-			function ( WC_Meta_Data $meta ) {
-				return str_starts_with( $meta->key, '_wc_order_source_attribution_' );
+		$return = [];
+		$prefix = $this->get_meta_prefixed_field( '' );
+
+		foreach ( $meta as $item ) {
+			if ( str_starts_with( $item->key, $prefix ) ) {
+				$return[ $this->unprefix_meta_field( $item->key ) ] = $item->value;
 			}
-		);
+		}
+
+		// Determine the device type from the user agent.
+		if ( array_key_exists( 'user_agent', $return ) ) {
+			$detector = new MobileDetect( null, $return['user_agent'] );
+			if ( $detector->isMobile() ) {
+				$return['device_type'] = __( 'Mobile', 'woocommerce-order-source-attribution' );
+			} elseif ( $detector->isTablet() ) {
+				$return['device_type'] = __( 'Tablet', 'woocommerce-order-source-attribution' );
+			} else {
+				$return['device_type'] = __( 'Desktop', 'woocommerce-order-source-attribution' );
+			}
+		}
+
+		// Determine the origin based on source type and referrer.
+		$source_type = $return['type'] ?? '';
+		switch ( $source_type ) {
+			case 'organic':
+				$origin = __( 'Organic search', 'woocommerce-order-source-attribution' );
+				break;
+
+			case 'referral':
+				$origin = __( 'Referral', 'woocommerce-order-source-attribution' );
+				break;
+
+			case 'typein':
+				$origin = __( 'Direct', 'woocommerce-order-source-attribution' );
+				break;
+
+			default:
+				$origin = __( 'Unknown', 'woocommerce-order-source-attribution' );
+				break;
+		}
+
+		$return['origin'] = $origin;
+
+		return $return;
+	}
+
+	/**
+	 * Set the meta prefix for our fields.
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	private function set_field_prefix(): void {
+		$prefix = (string) apply_filters( 'wc_order_source_attribution_tracking_field_prefix', 'wc_order_source_attribution_' );
+
+		// Remove leading and trailing underscores.
+		$prefix = trim( $prefix, '_' );
+
+		// Ensure the prfix ends with _, and set the prefix.
+		$this->field_prefix = "{$prefix}_";
 	}
 
 	/**
@@ -375,8 +536,8 @@ class AttributionFields {
 	 * @return void
 	 */
 	public function output_origin_column( WC_Order $order ) {
-		$source_type      = $order->get_meta( '_wc_order_source_attribution_source_type' );
-		$source           = $order->get_meta( '_wc_order_source_attribution_utm_source' ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
+		$source_type      = $order->get_meta( $this->get_meta_prefixed_field( 'type' ) );
+		$source           = $order->get_meta( $this->get_meta_prefixed_field( 'utm_source' ) ) ?: esc_html__( '(none)', 'woocommerce-order-source-attribution' );
 		$formatted_source = ucfirst( trim( $source, '()' ) );
 		$label            = $this->get_source_label( $source_type );
 

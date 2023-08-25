@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		esc_html_e( 'Total revenue', 'woocommerce-order-source-attribution' );
 		echo wc_help_tip(
-			__( "This is the Customer Lifetime Value, or the total amount you have earned from this customer's orders.", 'woocommerce-order-source-attribution' )
+			__( 'The sum of all purchases by this customer. This includes taxes and fees.', 'woocommerce-order-source-attribution' )
 		); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 		?>
 	</h4>

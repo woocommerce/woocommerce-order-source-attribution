@@ -1,3 +1,7 @@
+# ARCHIVED
+
+This feature is now natively implemented in WooCommerce. Repo will no longer be used.
+
 # WooCommerce Order Source Attribution
 
 MVP/Prototype of order attribution/source functionality in WordPress.

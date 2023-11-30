@@ -1,3 +1,13 @@
+
+ █████  ██████   ██████ ██   ██ ██ ██    ██ ███████ ██████  
+██   ██ ██   ██ ██      ██   ██ ██ ██    ██ ██      ██   ██ 
+███████ ██████  ██      ███████ ██ ██    ██ █████   ██   ██ 
+██   ██ ██   ██ ██      ██   ██ ██  ██  ██  ██      ██   ██ 
+██   ██ ██   ██  ██████ ██   ██ ██   ████   ███████ ██████  
+                                                            
+This repository is no longer being used. This feature is now natively implemented in WooCommerce.                                                       
+
+
 # WooCommerce Order Source Attribution
 
 MVP/Prototype of order attribution/source functionality in WordPress.
